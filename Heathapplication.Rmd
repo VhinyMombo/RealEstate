@@ -1,0 +1,338 @@
+---
+title: "TP3"
+author: "vhinyg"
+date: "02/11/2020"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+```{r}
+library(Metrics)
+library(ggplot2)
+library(corrplot)
+library(bayestestR)
+library(lars); 
+library(MASS);
+library(glmnet)
+
+```
+
+## Data Visualization
+
+```{r}
+tab2=read.table("http://www-stat.stanford.edu/~tibs/ElemStatLearn/datasets/SAheart.data",
+	sep=",",head=T,row.names=1)
+Y = tab2$chd
+head(tab2)
+tab = tab2
+
+
+tab$famhist = as.integer((tab$famhist=="Present")) # change present, absent respectively by 1 0 
+head(tab)
+
+mcor = cor(tab) # correlation matrix
+
+corrplot(mcor, method="color", addCoef.col= "black", tl.srt =
+45, sig.level=0.01, insig="blank")
+pairs(tab,pch=22,bg=c("red","blue")[unclass(factor(tab[,"chd"]))])
+```
+
+Apart from the adiposity/ obsesity and adiposity/age which are a correlation up to 0.5, variables are weakly corralated.
+
+On the plot of data it is still difficult to split easly positive from negative because the different scatter plot are merged.
+
+## A Logistic Regression Model 
+#### a) estimation of parameters
+```{r}
+n = dim(tab)[1] # n observations
+p = dim(tab)[2]-1 # p variables explicatives
+r = 0.75 # on prend 75% des des observations pour le training
+#tab = scale(tab,center = TRUE,scale = TRUE)
+
+#################################
+train_rows = sample(1:n,r*n)
+tab.train = as.data.frame(tab[train_rows,]) # selection of the train
+tab.test = as.data.frame(tab[-train_rows,])# selection of the test
+Y.test = Y[-train_rows]
+
+head(tab)
+```
+
+
+```{r}
+res=glm(chd~.,family=binomial,data = tab.train )
+summary(res)
+
+#on utilise family = binomoial car il s'agit de faire un model de type "sucess/fail" avec une probabilite p pour "success"
+```
+Avec un seuil de p-value à 0.01, les variables les plus significatives sont la "tobacco", "ldl", "famhistPresent", "typea" et "age". L'age est le facteur le plus important.
+
+#### b)
+```{r}
+attributes(res)
+```
+
+
+```{r}
+ ### prediction
+prob = predict.glm(res, newdata = tab.test,type = "response") # give prob
+lin = predict.glm(res, newdata = tab.test,type = "link") # give beta x
+OR = exp(res$coefficients) # odd ratio
+summary(prob)
+```
+
+```{r}
+OR
+```
+The OR give how different variables influences whether the chance of being ill is increase or not. Typically the \mathcal(famhist) is play an important role on having the \mathcal(chd). Almost all variable increases the chance apart from the \mathcal(sdp) and \mathcal(obesity). If we have colinearity in dataset the interpretation of the odd ration must be done with caution.
+
+## Performation of the classification model
+### Confusion matrix
+```{r}
+Threshold = 0.5
+Y.pred =  as.integer(prob >= Threshold) 
+confusion_matrix = table(Y.pred,Y.test)
+confusion_matrix
+```
+
+```{r}
+pred.accuracy = sum(diag(confusion_matrix))/sum(confusion_matrix)*100#   prediction accuracy
+pred.recall = confusion_matrix[2,2]/sum(confusion_matrix[,2])*100 # the prediction of being ill ability 
+pred.specifity = confusion_matrix[1,1]/sum(confusion_matrix[,1])*100 # the prediction of bein healthy  ability 
+pred.precision = confusion_matrix[2,2]/sum(confusion_matrix[2,])*100
+pred.error_rate = sum(diag(confusion_matrix[1:2,2:1]))/sum(confusion_matrix) *100
+actual.accurary =  as.double(table(Y.test)[1]/sum(table(Y.test))) # model accuracy
+pred.accuracy
+pred.recall
+pred.error_rate
+```
+
+
+### k-fold
+
+
+```{r}
+##shuffling
+rows <- sample(nrow(tab))
+tab<- tab[rows, ]
+## folds
+k = 5#as.integer(1/(1-r)) ## fold number
+fold = cut(seq(1,nrow(tab)), breaks = k,labels = FALSE)
+##
+pred.accuracyk = c()
+pred.recallk = c()
+pred.error_ratek = c()
+
+for (i in 1:k) {
+  test_rows = which(fold == i,arr.ind = TRUE) 
+  tab.testk = tab[test_rows,]
+  tab.traink = tab[-test_rows,]
+  Y.testk = Y[test_rows]
+  ### regression logistic 
+  resk=glm(chd~.,family=binomial,data = tab.traink)
+  ### prediction
+  prob = predict.glm(res, newdata = tab.testk,type = "response") # give prob
+  Y.pred =  as.integer(prob >= Threshold) 
+  confusion_matrix = table(Y.pred,Y.testk)
+  pred.accuracyk[i] = sum(diag(confusion_matrix))/sum(confusion_matrix)*100#   prediction accuracy
+  pred.recallk[i] = confusion_matrix[2,2]/sum(confusion_matrix[,2])*100 # the prediction of being ill ability
+  pred.error_ratek[i] = sum(diag(confusion_matrix[1:2,2:1]))/sum(confusion_matrix) *100 
+}
+boxplot(data.frame(pred.recallk,pred.accuracyk,pred.error_ratek))
+mean(pred.recallk)
+mean(pred.error_ratek)
+mean(pred.accuracyk)
+```
+```{r}
+k = 10#as.integer(1/(1-r)) ## fold number
+fold = cut(seq(1,nrow(tab)), breaks = k,labels = FALSE)
+
+pred.accuracyk = c()
+pred.recallk = c()
+pred.error_ratek = c()
+
+for (i in 1:k) {
+  test_rows = which(fold == i,arr.ind = TRUE) 
+  tab.testk = tab[test_rows,]
+  tab.traink = tab[-test_rows,]
+  Y.testk = Y[test_rows]
+  ### regression logistic 
+  resk=glm(chd~.,family=binomial,data = tab.traink)
+  ### prediction
+  prob = predict.glm(res, newdata = tab.testk,type = "response") # give prob
+  Y.pred =  as.integer(prob >= Threshold) 
+  confusion_matrix = table(Y.pred,Y.testk)
+  pred.accuracyk[i] = sum(diag(confusion_matrix))/sum(confusion_matrix)*100#   prediction accuracy
+  pred.recallk[i] = confusion_matrix[2,2]/sum(confusion_matrix[,2])*100 # the prediction of being ill ability
+  pred.error_ratek[i] = sum(diag(confusion_matrix[1:2,2:1]))/sum(confusion_matrix) *100 
+}
+boxplot(data.frame(pred.recallk,pred.accuracyk,pred.error_ratek))
+mean(pred.recallk)
+mean(pred.error_ratek)
+mean(pred.accuracyk)
+```
+This graph gives us the distribution of the error and the the accuracy. with 5 and 10 different fold we obtain approximatively the same values.
+
+
+## Model Selection
+#### statiscal approach
+```{r}
+#Régression logistique Forward.
+resall<-glm(chd~.,data=tab,family=binomial);
+res0<-glm(chd~1,data=tab,family=binomial);
+resfor<-step(res0,list(upper=resall),direction='forward')
+```
+
+
+```{r}
+##Régression logistique Backward
+resback<-step(res,direction='backward')
+print(resback)
+```
+
+
+```{r}
+#Régression logistique Stepwise
+resstep<-step(res,direction='both');
+print(resstep)
+```
+```{r}
+formula(resfor)
+formula(resback)
+formula(resstep)
+```
+Comme A a) on retrouve bien que les variales explicatives significatives sont age, famhist, tobacco, typea, ldl
+
+```{r}
+Y = tab2$chd
+head(tab2)
+tab = tab2
+tab$famhist = as.integer((tab$famhist=="Present")) # change present, absent respectively by 1 0 
+r = 0.8 # on prend 80% des des observations pour le training
+#tab = scale(tab,center = TRUE,scale = TRUE)
+#################################
+train_rows = sample(1:n,r*n)
+tab.train = as.data.frame(tab[train_rows,]) # selection of the train
+tab.test = as.data.frame(tab[-train_rows,])# selection of the test
+X.train = as.matrix(tab.train[,-dim(tab.train)[2]])
+X.test = as.matrix(tab.test[,-dim(tab.test)[2]])
+Y.test = tab.test$chd
+Y.train = tab.train$chd
+
+```
+
+
+```{r}
+library(lars); library(MASS);library(glmnet)
+```
+
+
+```{r}
+grid = 10^seq(5,-2,length = 100) # sequence des lambda
+resridge <- glmnet(X.train,Y.train,alpha=0,lambda = grid,family = "binomial")
+plot(resridge,xvar="lambda",type="l",col=1:nrow(tab.train)-1);legend("topright",legend=colnames(tab.train[,1:ncol(tab.train)-1]), col=1:10, lty=1)
+```
+
+
+
+
+
+
+
+
+
+```{r}
+plot(c(resridge$lambda,0),pch = 16,type = "b",col = "blue"); grid()
+```
+```{r}
+####################### cross validation
+ridge.cv.out<-cv.glmnet(X.train, Y.train, alpha = 0,nfolds = 10,family = "binomial"); ridge.cv.out # on sélectionne la meilleure valeur de lambda par validation croisée
+ridge.lamb.min<-ridge.cv.out$lambda.min # le meilleur lambda est celui qui produit the min MSE
+ridge.lamb.1se<-ridge.cv.out$lambda.1se # le meilleur lambda est celui qui produit 1 std rule
+
+```
+```{r}
+ridge.predbest <- predict(resridge, s = ridge.lamb.min, newx = X.test,type = 'response')
+ridge.predbest[1:20]
+ridge.pred1se <- predict(resridge, s = ridge.lamb.1se, newx = X.test,type ='response')
+ridge.pred1se[1:20]
+
+```
+```{r}
+reslasso = glmnet(X.train,Y.train,alpha=1,lambda = grid,family = "binomial")
+plot(reslasso,xvar="lambda",type="l",col=1:nrow(tab.train)-1);legend("topright",legend=colnames(tab.train[,1:ncol(tab.train)-1]), col=1:10, lty=1)
+```
+
+
+```{r}
+plot(c(reslasso$lambda,0),pch = 16,type = "b",col = "blue"); grid()
+```
+
+```{r}
+####################### cross validation
+lasso.cv.out<-cv.glmnet(X.train, Y.train, alpha = 0,nfolds = 10,family = "binomial"); lasso.cv.out # on sélectionne la meilleure valeur de lambda par validation croisée
+lasso.lamb.min<-lasso.cv.out$lambda.min # le meilleur lambda est celui qui produit the min MSE
+lasso.lamb.1se<-lasso.cv.out$lambda.1se # le meilleur lambda est celui qui produit 1 std rule
+
+```
+
+
+```{r}
+lasso.predbest <- predict(reslasso, s = lasso.lamb.min, newx = X.test,type = 'response')
+lasso.predbest[1:20]
+#lasso.pred1se <- predict(reslasso, s = lasso.lamb.1se, newx = X.test,type ='response')
+#lasso.pred1se[1:20]
+
+```
+
+
+### Matrix de confiances
+
+```{r}
+
+Threshold = 0.5
+Y.pred.full.lasso =  as.integer(lasso.predbest >= Threshold)
+Y.pred.full.ridge =  as.integer(ridge.predbest >= Threshold)
+confusion_matrix.full.lasso = table(Y.pred.full.lasso,Y.test)
+confusion_matrix.full.ridge = table(Y.pred.full.ridge,Y.test)
+```
+
+
+
+
+
+
+## lasso
+### full 
+```{r}
+pred.accuracy.full.lasso = sum(diag(confusion_matrix.full.lasso))/sum(confusion_matrix.full.lasso)*100#   prediction accuracy
+
+pred.recall.full.lasso = confusion_matrix.full.lasso[2,2]/sum(confusion_matrix.full.lasso[,2])*100 # the prediction of being ill ability 
+pred.error_rate.full.lasso = sum(diag(confusion_matrix.full.lasso[1:2,2:1]))/sum(confusion_matrix.full.lasso) *100
+
+actual.accurary  # model accuracy
+pred.accuracy.full.lasso
+pred.recall.full.lasso
+pred.error_rate.full.lasso
+```
+
+
+
+### ridge
+```{r}
+pred.accuracy.full.ridge = sum(diag(confusion_matrix.full.ridge))/sum(confusion_matrix.full.ridge)*100#   prediction accuracy
+
+pred.recall.full.ridge = confusion_matrix.full.ridge[2,2]/sum(confusion_matrix.full.ridge[,2])*100 # the prediction of being ill ability 
+pred.error_rate.full.ridge = sum(diag(confusion_matrix.full.ridge[1:2,2:1]))/sum(confusion_matrix.full.ridge) *100
+
+actual.accurary  # model accuracy
+pred.accuracy.full.ridge
+pred.recall.full.ridge
+pred.error_rate.full.ridge
+```
+
+
+
+

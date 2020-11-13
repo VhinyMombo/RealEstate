@@ -1,0 +1,193 @@
+---
+title: "TP3 Real Estate"
+author: "Vhiny-Guilley"
+date: "13/11/2020"
+output: html_document
+---
+
+
+#### loading packages
+```{r}
+library(Metrics)
+library(ggplot2)
+library(corrplot)
+library(bayestestR)
+
+```
+
+
+#### Lecture des données
+
+On sépare les prix en 2 classes 0 et 1. Une transaction appartient à la classe 1 si son prix est supérieure à la médiane de la variable prix et 0 sinon.
+
+```{r}
+
+tab=read.table("RealEstate.csv",header=TRUE,sep=',');
+medianHousePrice=median(tab$Y.house.price.of.unit.area);
+medHousePriceBin=as.numeric(tab$Y.house.price.of.unit.area>medianHousePrice);
+
+## 
+tabmed = tab
+tabmed = tabmed[,-1]
+tabmed$Y.house.price.of.unit.area = medHousePriceBin
+head(tabmed)
+colnames(tabmed)[dim(tabmed)[2]] <- "medHousePriceBin" # change la variable price en medHousePriceBin dans le tableau.
+head(tabmed)
+
+
+```
+#### visualisation des données
+
+```{r}
+mcor = cor(tabmed) # correlation matrix
+
+corrplot(mcor, method="color", addCoef.col= "black", tl.srt =
+45, sig.level=0.01, insig="blank")
+pairs(tabmed,pch=22,bg=c("red","blue")[unclass(factor(tabmed[,"medHousePriceBin"]))])
+```
+Dans ce graphe les points bleus sont les transactions dont le prix est supérieur à la médiane et les rouges sont celles dont le prix est inférieur. A part, X1.transaction.date/X2.house.date, sur lequel on peut pas distinguer des clusters, sur les autres plots , on voit nettement des cluster se former dans chacun des covariables plots.
+
+La proximité à la station la plus proche est une variables fortement corrélée avec la longitude, et moyennement corrélée aux autres variables.
+
+
+Dans la suite on va essayer de generer un modèle de regression logistique jeu de données.
+
+### logistic model
+#### organisation du dataset
+```{r}
+set.seed(1234)
+p = 0.8
+ind = sample(2, nrow(tabmed), replace = T, prob = c(p,1-p)) ## selection aleatoire 80 - 20 des indices du tableau 
+tab.train = as.data.frame(tabmed[ind == 1,])
+tab.test = as.data.frame(tabmed[ind == 2,])
+Y.test
+```
+
+#### Etude du model
+```{r}
+model.full = glm(medHousePriceBin ~ ., data = tab.train, family = 'binomial')
+summary(model.full)
+```
+Avec un seuil de p-value à 0.01, les variables  statistiquement significative sont X2,X3,X4 et X5. De plus le test rejete la varible X6.longitude avec une probabilité de 0.95! Ce qui est sans doute du à la corrélation de celle ci avec X3.
+
+
+
+#### Prediction
+```{r}
+ ### prediction
+prob = predict.glm(model.full, newdata = tab.test,type = "response") # give the predicted probability
+OR = exp(model.full$coefficients) # odd ratio
+summary(prob)
+OR
+```
+
+#### Performance du model 
+```{r}
+Threshold = 0.5
+Y.pred.full =  as.integer(prob >= Threshold) 
+confusion_matrix.full = table(Y.pred.full,tab.test$medHousePriceBin)
+confusion_matrix.full
+```
+
+La matrice de confusion nous donne une performance
+
+```{r}
+pred.accuracy.full = sum(diag(confusion_matrix.full))/sum(confusion_matrix.full)*100#   prediction accuracy
+pred.recall.full = confusion_matrix.full[2,2]/sum(confusion_matrix.full[,2])*100 # probabilité de bien predire les hauts prix  
+pred.specifity.full = confusion_matrix.full[1,1]/sum(confusion_matrix.full[,1])*100 # probabilité de bien predire les bas prix  
+pred.precision.full = confusion_matrix.full[2,2]/sum(confusion_matrix.full[2,])*100
+pred.error_rate.full = sum(diag(confusion_matrix.full[1:2,2:1]))/sum(confusion_matrix.full) *100 # probabilité d'obtenir une erreur
+
+actual.accurary =  as.double(table(tab.test$medHousePriceBin)[1]/sum(table(tab.test$medHousePriceBin))) # model accuracy
+pred.accuracy.full
+pred.recall.full
+pred.error_rate.full
+actual.accurary
+```
+
+
+#### k-folds le model full
+
+```{r}
+##shuffling
+rows <- sample(nrow(tabmed))
+tabmed <- tabmed[rows, ]
+## folds
+k = 5 #as.integer(1/(1-r)) ## fold number
+fold = cut(seq(1,nrow(tabmed)), breaks = k,labels = FALSE)
+##
+pred.accuracyk.full = c()
+pred.recallk.full = c()
+pred.error_ratek.full = c()
+
+for (i in 1:k) {
+  test_rows = which(fold == i,arr.ind = TRUE) 
+  tab.testk = tabmed[test_rows,]
+  tab.traink = tabmed[-test_rows,]
+  #Y.testk = Y[test_rows]
+  ### regression logistic 
+  model.fullk=glm(medHousePriceBin~.,family=binomial,data = tab.traink)
+  ### prediction
+  prob = predict.glm(model.fullk, newdata = tab.testk,type = "response") # give prob
+  Y.pred.full =  as.integer(prob >= Threshold) 
+  confusion_matrix = table(Y.pred.full,tab.testk$medHousePriceBin)
+  pred.accuracyk.full[i] = sum(diag(confusion_matrix))/sum(confusion_matrix)*100#   prediction accuracy
+  pred.recallk.full[i] = confusion_matrix[2,2]/sum(confusion_matrix[,2])*100 # the prediction of being ill ability
+  pred.error_ratek.full[i] = sum(diag(confusion_matrix[1:2,2:1]))/sum(confusion_matrix) *100 
+}
+boxplot(data.frame(pred.recallk.full,pred.accuracyk.full,pred.error_ratek.full))
+mean(pred.recallk.full)
+mean(pred.error_ratek.full)
+mean(pred.accuracyk.full)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

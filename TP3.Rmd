@@ -2,7 +2,10 @@
 title: "TP3 Real Estate"
 author: "Vhiny-Guilley"
 date: "13/11/2020"
-output: html_document
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
 ---
 
 
@@ -12,6 +15,7 @@ library(Metrics)
 library(ggplot2)
 library(corrplot)
 library(bayestestR)
+library(lars); library(MASS);library(glmnet)
 
 ```
 
@@ -55,12 +59,11 @@ Dans la suite on va essayer de generer un modèle de regression logistique jeu d
 ### logistic model
 #### organisation du dataset
 ```{r}
-set.seed(1234)
+#set.seed(1234)
 p = 0.8
 ind = sample(2, nrow(tabmed), replace = T, prob = c(p,1-p)) ## selection aleatoire 80 - 20 des indices du tableau 
 tab.train = as.data.frame(tabmed[ind == 1,])
 tab.test = as.data.frame(tabmed[ind == 2,])
-Y.test
 ```
 
 #### Etude du model
@@ -164,7 +167,7 @@ plot(model.ridge,xvar="lambda",type="l",col=1:nrow(tab.train)-1);legend("toprigh
 plot(c(model.ridge$lambda,0),pch = 16,type = "b",col = "blue"); grid()
 ```
 
-#### Selection du \lambda par cross validation
+#### Selection du $\lambda$ par cross validation
 ```{r}
 ####################### cross validation
 ridge.cv.out<-cv.glmnet(X.train, Y.train, alpha = 0,nfolds = 10,family = "binomial"); ridge.cv.out # on sélectionne la meilleure valeur de lambda par validation croisée

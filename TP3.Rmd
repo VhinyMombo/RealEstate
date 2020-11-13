@@ -141,53 +141,109 @@ mean(pred.error_ratek.full)
 mean(pred.accuracyk.full)
 ```
 
+En utilisant le k-fold  on évalue la precision du model. nous donne une bonne performance global. Avec une performance global de 80% et un taux d'erreur 20%.
 
+### Ridge regression
+#### organisation du dataset
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r}
+X.train = as.matrix(tab.train[,-dim(tab.train)[2]])
+X.test = as.matrix(tab.test[,-dim(tab.test)[2]])
+Y.test = tab.test$medHousePriceBin
+Y.train = tab.train$medHousePriceBin
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+#### Ridge model
+```{r}
+grid = 10^seq(5,-2,length = 100) # sequence des lambda
+model.ridge <- glmnet(X.train,Y.train,alpha=0,lambda = grid,family = "binomial")
+plot(model.ridge,xvar="lambda",type="l",col=1:nrow(tab.train)-1);legend("topright",legend=colnames(tab.train[,1:ncol(tab.train)-1]), col=1:10, lty=1)
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+plot(c(model.ridge$lambda,0),pch = 16,type = "b",col = "blue"); grid()
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+#### Selection du \lambda par cross validation
+```{r}
+####################### cross validation
+ridge.cv.out<-cv.glmnet(X.train, Y.train, alpha = 0,nfolds = 10,family = "binomial"); ridge.cv.out # on sélectionne la meilleure valeur de lambda par validation croisée
+ridge.lamb.min<-ridge.cv.out$lambda.min # le meilleur lambda est celui qui produit the min MSE
+
+```
+
+On selectionne le modele le lambda qui minimise le MSE pour notre modèle. On effectue 10 folds.
+
+```{r}
+ridge.predbest <- predict(model.ridge, s = ridge.lamb.min, newx = X.test,type = 'response')
+ridge.predbest[1:20]
+
+```
+#### prediction
+```{r}
+Threshold = 0.5
+Y.pred.ridge =  as.integer(ridge.predbest >= Threshold)
+confusion_matrix.ridge = table(Y.pred.ridge,Y.test)
+confusion_matrix.ridge
+
+```
+La matrice de confusion nous donne une performance
+
+```{r}
+pred.accuracy.ridge = sum(diag(confusion_matrix.ridge))/sum(confusion_matrix.ridge)*100#   prediction accuracy
+pred.recall.ridge = confusion_matrix.ridge[2,2]/sum(confusion_matrix.ridge[,2])*100 # probabilité de bien predire les hauts prix  
+pred.specifity.ridge = confusion_matrix.ridge[1,1]/sum(confusion_matrix.ridge[,1])*100 # probabilité de bien predire les bas prix  
+pred.precision.ridge = confusion_matrix.ridge[2,2]/sum(confusion_matrix.ridge[2,])*100
+pred.error_rate.ridge = sum(diag(confusion_matrix.ridge[1:2,2:1]))/sum(confusion_matrix.ridge) *100 # probabilité d'obtenir une erreur
+
+actual.accurary =  as.double(table(tab.test$medHousePriceBin)[1]/sum(table(tab.test$medHousePriceBin))) # model accuracy
+pred.accuracy.ridge
+pred.recall.ridge
+pred.specifity.ridge
+pred.error_rate.ridge
+actual.accurary
+```
+On retrouve une performance de 76% sur le modèle. Le modèle predit bien la classe des hauts prix à 77%.
+
+
+#### k-folds le model ridge
+
+```{r}
+##shuffling
+rows <- sample(nrow(tabmed))
+tabmed <- tabmed[rows, ]
+## folds
+k = 5 #as.integer(1/(1-r)) ## fold number
+fold = cut(seq(1,nrow(tabmed)), breaks = k,labels = FALSE)
+##
+pred.accuracyk.ridge = c()
+pred.recallk.ridge = c()
+pred.error_ratek.ridge = c()
+
+for (i in 1:k) {
+  test_rows = which(fold == i,arr.ind = TRUE) 
+  tab.testk = tabmed[test_rows,]
+  tab.traink = tabmed[-test_rows,]
+  #Y.testk = Y[test_rows]
+  ### regression logistic 
+  model.ridgek=glm(medHousePriceBin~.,family=binomial,data = tab.traink)
+  ### prediction
+  prob = predict.glm(model.ridgek, newdata = tab.testk,type = "response") # give prob
+  Y.pred.ridge =  as.integer(prob >= Threshold) 
+  confusion_matrix = table(Y.pred.ridge,tab.testk$medHousePriceBin)
+  pred.accuracyk.ridge[i] = sum(diag(confusion_matrix))/sum(confusion_matrix)*100#   prediction accuracy
+  pred.recallk.ridge[i] = confusion_matrix[2,2]/sum(confusion_matrix[,2])*100 # the prediction of being ill ability
+  pred.error_ratek.ridge[i] = sum(diag(confusion_matrix[1:2,2:1]))/sum(confusion_matrix) *100 
+}
+boxplot(data.frame(pred.recallk.ridge,pred.accuracyk.ridge,pred.error_ratek.ridge))
+mean(pred.recallk.ridge)
+mean(pred.error_ratek.ridge)
+mean(pred.accuracyk.ridge)
+```
+```{r}
+boxplot(data.frame(pred.recallk.full,pred.accuracyk.full,pred.error_ratek.full))
+mean(pred.recallk.full)
+mean(pred.error_ratek.full)
+mean(pred.accuracyk.full)
+```
+

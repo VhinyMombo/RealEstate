@@ -116,7 +116,7 @@ actual.accurary
 rows <- sample(nrow(tabmed))
 tabmed <- tabmed[rows, ]
 ## folds
-k = 5 #as.integer(1/(1-r)) ## fold number
+k = 15 #as.integer(1/(1-r)) ## fold number
 fold = cut(seq(1,nrow(tabmed)), breaks = k,labels = FALSE)
 ##
 pred.accuracyk.full = c()
@@ -216,7 +216,7 @@ On retrouve une performance de 76% sur le modèle. Le modèle predit bien la cla
 rows <- sample(nrow(tabmed))
 tabmed <- tabmed[rows, ]
 ## folds
-k = 5 #as.integer(1/(1-r)) ## fold number
+k = 15 #as.integer(1/(1-r)) ## fold number
 fold = cut(seq(1,nrow(tabmed)), breaks = k,labels = FALSE)
 ##
 pred.accuracyk.ridge = c()
@@ -227,24 +227,31 @@ for (i in 1:k) {
   test_rows = which(fold == i,arr.ind = TRUE) 
   tab.testk = tabmed[test_rows,]
   tab.traink = tabmed[-test_rows,]
-  #Y.testk = Y[test_rows]
+  X.traink = as.matrix(tab.traink[,-dim(tab.traink)[2]])
+  X.testk = as.matrix(tab.testk[,-dim(tab.testk)[2]])
+  Y.testk = tab.testk$medHousePriceBin
+  Y.traink = tab.traink$medHousePriceBin
   ### regression logistic 
-  model.ridgek=glm(medHousePriceBin~.,family=binomial,data = tab.traink)
+  model.ridgek <- glmnet(X.traink,Y.traink,alpha=0,lambda = grid,family = "binomial")
   ### prediction
-  prob = predict.glm(model.ridgek, newdata = tab.testk,type = "response") # give prob
+  ####################### cross validation
+  ridge.cv.out<-cv.glmnet(X.traink, Y.traink, alpha = 0,nfolds = 10,family = "binomial") # on sélectionne la meilleure valeur de lambda par validation croisée
+  ridge.lamb.mink<-ridge.cv.out$lambda.min # le meilleur lambda est celui qui produit the min MSE
+  
+  prob <- predict(model.ridgek, s = ridge.lamb.mink, newx = X.testk,type = 'response')
   Y.pred.ridge =  as.integer(prob >= Threshold) 
   confusion_matrix = table(Y.pred.ridge,tab.testk$medHousePriceBin)
   pred.accuracyk.ridge[i] = sum(diag(confusion_matrix))/sum(confusion_matrix)*100#   prediction accuracy
   pred.recallk.ridge[i] = confusion_matrix[2,2]/sum(confusion_matrix[,2])*100 # the prediction of being ill ability
   pred.error_ratek.ridge[i] = sum(diag(confusion_matrix[1:2,2:1]))/sum(confusion_matrix) *100 
 }
-boxplot(data.frame(pred.recallk.ridge,pred.accuracyk.ridge,pred.error_ratek.ridge))
 mean(pred.recallk.ridge)
 mean(pred.error_ratek.ridge)
 mean(pred.accuracyk.ridge)
 ```
 ```{r}
 boxplot(data.frame(pred.recallk.full,pred.accuracyk.full,pred.error_ratek.full))
+boxplot(data.frame(pred.recallk.ridge,pred.accuracyk.ridge,pred.error_ratek.ridge))
 mean(pred.recallk.full)
 mean(pred.error_ratek.full)
 mean(pred.accuracyk.full)

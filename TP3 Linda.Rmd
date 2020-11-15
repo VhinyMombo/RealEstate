@@ -1,0 +1,238 @@
+---
+title: "TP3 MRR"
+author: "Linda KAABI & Vhiny MOMBO"
+date: "12/11/2020"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r}
+library(glmnet);library(corrplot);library(Metrics);library(ggplot2)
+library(lars); library(MASS); library(bayestestR)
+
+
+tab= read.table(file="RealEstate.csv", header=TRUE, sep=",")
+medianHousePrice=median(tab$Y.house.price.of.unit.area); medHousePriceBin=as.numeric(tab$Y.house.price.of.unit.area>medianHousePrice);
+##
+tabmed = tab
+tabmed = tabmed[,-1] 
+tabmed$Y.house.price.of.unit.area = medHousePriceBin 
+
+colnames(tabmed)[dim(tabmed)[2]]<- "medHousePriceBin"
+head(tabmed)
+
+mcor = cor(tabmed) # correlation matrix
+corrplot(mcor, method="color", addCoef.col= "black", tl.srt = 45, sig.level=0.01, insig="blank")
+
+```
+
+## Visualisation des données 
+```{r}
+pairs(tabmed, pch=22, bg=c("red","blue") [unclass(factor(tabmed[,"medHousePriceBin"]))])
+```
+
+## Création d'un data set d'apprentissage et de test
+```{r}
+set.seed(50)
+p = 0.8
+ind = sample(2, nrow(tabmed), replace = T, prob = c(p,1-p)) ## selection aleatoire 80 - 20 des indices d 
+tab.train = as.data.frame(tabmed[ind == 1,])
+tab.test = as.data.frame(tabmed[ind == 2,])
+
+```
+
+# Régression Stepwise 
+
+```{r}
+model.full = glm (medHousePriceBin ~ ., data = tab.train, family = binomial)
+resstep<-step(model.full,direction='both'); summary(resstep)
+```
+
+Sans surprise, comme vu dans le TP2, la variable X6.longitude a été éliminée dans la sélection de variables, ce qui augmente la significaivité des autres variables, c'est ce qu'on remarque en comparant les test effectués sur une régression logistique de type full (toutes les variables) et les test sur une régression logistique de type stepwise. 
+
+```{r}
+OR_step=exp(resstep$coefficients) # give the odd ratios on stepwise model
+OR_step
+```
+
+Les variables X1.transaction date, X4.convenience.stores et X5.latitude, leur augmentation semble entrainer une augmentation de la probabilité que medHousePriceBin soit au-dessus de la médiane du prix de vente, au risque de 5%.
+
+## b ) Prédiction sur le model stepwise
+
+```{r}
+prob= predict.glm(resstep, newdata = tab.test,type = "response") # give the predicted prob on the stepwise model
+pred_step=as.numeric(prop>Threshold) #
+```
+
+On calcule les prédictions contruites à partir de ce modèle pred_step qui donne la valeur des $\hat\eta$ pour tous les individus dans le data set test. pred_step vaut 1 si pred_step > 1/2. 
+
+### Matrice de confusion
+
+```{r}
+table(pred_step01,tab.test$medHousePriceBin)
+```
+VHINY: attention il faut que tu modifies la valeur (à l'endroit [1,0] de la matrice c'est les faux positifs et l'endroit [0,1] les faux négatifs)
+Il semble y avoir 10/41 faux positifs et 3/36 faux négatifs. 
+
+### Courbe ROC et AUC 
+```{r}
+#install.packages('ROCR')
+library(ROCR)
+
+pred=prediction(pred_step,tab.test$medHousePriceBin)
+perf=performance(pred, "tpr" ,"fpr")
+plot(perf)
+```
+
+La courbe est assez proche du coin supérieur gauche, ainsi le modèle semble capturer le plus possible de vrais évènements avec le moins possible de faux évènements.
+
+```{r}
+ROC_auc=performance(pred,"auc")
+AUC=ROC_auc@y.values[[1]]
+print(AUC)
+```
+VHINY: modifie juste la valeur de l'AUC dans le commentaire 
+L'AUC est de 0.94.
+
+### K-fold cross validation
+
+````{r}
+rows=sample(nrow(tabmed))
+tabmed=tabmed[rows,]
+
+## folds
+
+k=10
+fold=cut(seq(1,nrow(tabmed)),breaks=k, labels=FALSE)
+##
+pred.accuracyk.step=c()
+pred.recallk.step=c()
+pred.error_ratk.step=c()
+
+for (i in 1:k){
+  test_rows=which(fold==i, arr.ind=TRUE)
+  tab.testk=tabmed[test_rows,]
+  tab.traink=tabmed[-test_rows,]
+  
+  # regression logistique
+  model.full=glm(medHousePriceBin~., family=binomial, data=tab.traink)
+  model.stepk=step(model.full,direction='both'); summary(resstep)
+  
+  # prediction
+  
+  pred_stepk=predict.glm(model.stepk, newdata= tab.testk, type="response")
+  Y.pred.step=as.numeric(pred_stepk>0.5)
+  confusion_matrix=table(Y.pred.step, tab.testk$medHousePriceBin)
+  pred.accuracyk.step[i]=sum(diag(confusion_matrix))/sum(confusion_matrix)*100 # prediction accuracy 
+  pred.recallk.step[i]=confusion_matrix[2,2]/sum(confusion_matrix[,2])*100 
+  pred.error_ratk.step[i]=sum(diag(confusion_matrix[1:2,2:1]))/sum(confusion_matrix)*100
+}
+
+boxplot(data.frame(pred.recallk.step, pred.accuracyk.step, pred.error_ratk.step))
+```
+
+En utilisant la validation croisée, on remarque que nous avons une performance globale qui se situe autour de 80%, avec un taux d'erreur autour de 20%. 
+
+# Modèle Lasso 
+
+On commence par préparer nos données. 
+
+```{r}
+X.train = as.matrix(tab.train[,-dim(tab.train)[2]])
+X.test = as.matrix(tab.test[,-dim(tab.test)[2]]) 
+Y.test = tab.test$medHousePriceBin
+Y.train = tab.train$medHousePriceBin
+```
+
+```{r}
+grid = 10^seq(5,-2,length = 100) # sequence des lambda
+lasso=glmnet(X.train,Y.train,alpha=1,lambda=grid,family = "binomial", standardize=FALSE)
+plot(lasso,xvar="lambda",type="l",col=1:10);legend("topright"
+                                                   ,legend=colnames(tab.train[,1:ncol(tab.train)-1]), col=1:10, lty=1)
+```
+On voit que plus lambda est grand, plus le nombre de variables sélectionnées est petit. 
+
+```{r}
+lasso.cv.out=cv.glmnet(X.train, Y.train, alpha = 1,nfolds = 10,family = "binomial"); lasso.cv.out
+lasso.min=lasso.cv.out$lambda.min # on sélectionne le plus petit lambda qui minimise le MSE 
+```
+
+On effectue une prédiction du modèle lasso avec le plus petit lambda minimisant le MSE: 
+
+```{r}
+lasso.min.pred= predict(lasso, s=lasso.min, newx=X.test, type="response")
+lasso.min.predBin=as.numeric(lasso.min.pred>0.5) # transforme les données en données binaire avec un seuil de 1/2 
+
+confusion_matrix.lasso = table(lasso.min.predBin,Y.test) # on crée la matrice de confusion 
+confusion_matrix.lasso
+```
+VHINY: attention il faut que tu modifies la valeur (à l'endroit [1,0] de la matrice c'est les faux positifs et l'endroit [0,1] les faux négatifs)
+
+On obtient alors 7/41 faux positifs et 4/36 faux négatifs. 
+
+## Courbe ROC et AUC 
+
+```{r}
+pred.lasso.min=prediction(lasso.min.predBin,tab.test$medHousePriceBin)
+perf.lasso.min=performance(pred.lasso.min, "tpr" ,"fpr")
+plot(perf)
+```
+La courbe est assez proche du coin supérieur gauche, ainsi le modèle semble capturer le plus possible de vrais évènements avec le moins possible de faux évènements. 
+
+```{r}
+ROC_auc.lasso=performance(pred.lasso.min,"auc")
+AUC.lasso=ROC_auc.lasso@y.values[[1]]
+print(AUC.lasso)
+```
+
+VHINY: écris "L'AUC est de .... "
+
+## K-folds cross validation
+
+
+```{r}
+##shuffling
+rows <- sample(nrow(tabmed))
+tabmed <- tabmed[rows, ]
+## folds
+k = 10 
+fold = cut(seq(1,nrow(tabmed)), breaks = k,labels = FALSE) 
+##
+pred.accuracyk.lasso = c() 
+pred.recallk.lasso = c() 
+pred.error_ratek.lasso = c()
+
+for (i in 1:k) {
+  test_rows = which(fold == i,arr.ind = TRUE)
+  tab.testk = tabmed[test_rows,]
+  tab.traink = tabmed[-test_rows,]
+  
+  X.train = as.matrix(tab.traink[,-dim(tab.traink)[2]])
+  X.test = as.matrix(tab.testk[,-dim(tab.testk)[2]]) 
+  Y.test = tab.testk$medHousePriceBin
+  Y.train = tab.traink$medHousePriceBin
+
+### regression lasso
+  
+  grid = 10^seq(5,-2,length = 100) # sequence des lambda
+  lasso.k=glmnet(X.train,Y.train,alpha=1,lambda=grid,family = "binomial", standardize=FALSE)
+  lasso.cv.out=cv.glmnet(X.train, Y.train, alpha = 1,nfolds = 10,family = "binomial"); 
+  lasso.mink=lasso.cv.out$lambda.min # on sélectionne le plus petit lambda qui minimise le MSE 
+  lasso.min.predk= predict(lasso, s=lasso.min, newx=X.test, type="response")
+  lasso.min.predBink=as.numeric(lasso.min.predk>0.5)
+  
+  # matrice de confusion et performance
+  
+  confusion_matrix=table(lasso.min.predBink,Y.test)
+  
+  pred.accuracyk.lasso[i]=sum(diag(confusion_matrix))/sum(confusion_matrix)*100
+  pred.recallk.lasso[i]=confusion_matrix[2,2]/sum(confusion_matrix[,2])*100
+  pred.error_ratek.lasso[i]=sum(diag(confusion_matrix[1:2,2:1]))/sum(confusion_matrix)*100
+}
+
+boxplot(data.frame(pred.recallk.lasso,pred.accuracyk.lasso,pred.error_ratek.lasso))
+```
+
+ 
+

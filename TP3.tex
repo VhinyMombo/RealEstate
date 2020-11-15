@@ -1,0 +1,1698 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={TP3 Real Estate},
+  pdfauthor={Kaabi Linda \& Vhiny-Guilley Mombo},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{TP3 Real Estate}
+\author{Kaabi Linda \& Vhiny-Guilley Mombo}
+\date{13/11/2020}
+
+\begin{document}
+\maketitle
+
+Dans cette étude on utilise le dataset ``RealEstate.csv'' pour expliquer
+les hauts et les bas prix en utilisants des regressions logistiques.
+\#\# 1) Chargemment des données et differents packages
+
+\hypertarget{loading-packages}{%
+\subsection{loading packages}\label{loading-packages}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(Metrics)}
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\KeywordTok{library}\NormalTok{(corrplot)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## corrplot 0.84 loaded
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(bayestestR)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'bayestestR'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:Metrics':
+## 
+##     auc
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(lars); }\KeywordTok{library}\NormalTok{(MASS);}\KeywordTok{library}\NormalTok{(glmnet)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loaded lars 1.2
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: Matrix
+\end{verbatim}
+
+\begin{verbatim}
+## Loaded glmnet 4.0-2
+\end{verbatim}
+
+\hypertarget{lecture-des-donnuxe9es}{%
+\subsection{Lecture des données}\label{lecture-des-donnuxe9es}}
+
+On sépare les prix en 2 classes 0 et 1. Une transaction appartient à la
+classe 1 si son prix est supérieure à la médiane de la variable prix et
+0 sinon. Préduire si une transaction appartient à une de ces 2 classes
+peut se faire par une régressions logistiques.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tab=}\KeywordTok{read.table}\NormalTok{(}\StringTok{"RealEstate.csv"}\NormalTok{,}\DataTypeTok{header=}\OtherTok{TRUE}\NormalTok{,}\DataTypeTok{sep=}\StringTok{','}\NormalTok{);}
+\NormalTok{medianHousePrice=}\KeywordTok{median}\NormalTok{(tab}\OperatorTok{$}\NormalTok{Y.house.price.of.unit.area);}
+\NormalTok{medHousePriceBin=}\KeywordTok{as.numeric}\NormalTok{(tab}\OperatorTok{$}\NormalTok{Y.house.price.of.unit.area}\OperatorTok{>}\NormalTok{medianHousePrice);}
+
+\CommentTok{## }
+\NormalTok{tabmed =}\StringTok{ }\NormalTok{tab}
+\NormalTok{tabmed =}\StringTok{ }\NormalTok{tabmed[,}\OperatorTok{-}\DecValTok{1}\NormalTok{]}
+\NormalTok{tabmed}\OperatorTok{$}\NormalTok{Y.house.price.of.unit.area =}\StringTok{ }\NormalTok{medHousePriceBin}
+\KeywordTok{head}\NormalTok{(tabmed)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   X1.transaction.date X2.house.age X3.distance.to.the.nearest.MRT.station
+## 1            2012.917         32.0                               84.87882
+## 2            2012.917         19.5                              306.59470
+## 3            2013.583         13.3                              561.98450
+## 4            2013.500         13.3                              561.98450
+## 5            2012.833          5.0                              390.56840
+## 6            2012.667          7.1                             2175.03000
+##   X4.number.of.convenience.stores X5.latitude X6.longitude
+## 1                              10    24.98298     121.5402
+## 2                               9    24.98034     121.5395
+## 3                               5    24.98746     121.5439
+## 4                               5    24.98746     121.5439
+## 5                               5    24.97937     121.5425
+## 6                               3    24.96305     121.5125
+##   Y.house.price.of.unit.area
+## 1                          0
+## 2                          1
+## 3                          1
+## 4                          1
+## 5                          1
+## 6                          0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{colnames}\NormalTok{(tabmed)[}\KeywordTok{dim}\NormalTok{(tabmed)[}\DecValTok{2}\NormalTok{]] <-}\StringTok{ "medHousePriceBin"} \CommentTok{# change la variable price en medHousePriceBin dans le tableau.}
+\KeywordTok{head}\NormalTok{(tabmed)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   X1.transaction.date X2.house.age X3.distance.to.the.nearest.MRT.station
+## 1            2012.917         32.0                               84.87882
+## 2            2012.917         19.5                              306.59470
+## 3            2013.583         13.3                              561.98450
+## 4            2013.500         13.3                              561.98450
+## 5            2012.833          5.0                              390.56840
+## 6            2012.667          7.1                             2175.03000
+##   X4.number.of.convenience.stores X5.latitude X6.longitude medHousePriceBin
+## 1                              10    24.98298     121.5402                0
+## 2                               9    24.98034     121.5395                1
+## 3                               5    24.98746     121.5439                1
+## 4                               5    24.98746     121.5439                1
+## 5                               5    24.97937     121.5425                1
+## 6                               3    24.96305     121.5125                0
+\end{verbatim}
+
+\hypertarget{visualisation-des-donnuxe9es}{%
+\subsection{visualisation des
+données}\label{visualisation-des-donnuxe9es}}
+
+Le plot des différentes covariables nous permet de distinguer les
+dependances a priori entre elles.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mcor =}\StringTok{ }\KeywordTok{cor}\NormalTok{(tabmed) }\CommentTok{# correlation matrix}
+\KeywordTok{corrplot}\NormalTok{(mcor, }\DataTypeTok{method=}\StringTok{"color"}\NormalTok{, }\DataTypeTok{addCoef.col=} \StringTok{"black"}\NormalTok{, }\DataTypeTok{tl.srt =}
+\DecValTok{45}\NormalTok{, }\DataTypeTok{sig.level=}\FloatTok{0.01}\NormalTok{, }\DataTypeTok{insig=}\StringTok{"blank"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{TP3_files/figure-latex/unnamed-chunk-3-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{pairs}\NormalTok{(tabmed,}\DataTypeTok{pch=}\DecValTok{22}\NormalTok{,}\DataTypeTok{bg=}\KeywordTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{,}\StringTok{"blue"}\NormalTok{)[}\KeywordTok{unclass}\NormalTok{(}\KeywordTok{factor}\NormalTok{(tabmed[,}\StringTok{"medHousePriceBin"}\NormalTok{]))]) }\CommentTok{# }
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{TP3_files/figure-latex/unnamed-chunk-3-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#dans le plot les points rouges sont les transactions dont le prix sont}
+\CommentTok{# en dessous de la mediane [0], et le bleus celles au dessus [1]}
+\end{Highlighting}
+\end{Shaded}
+
+Dans ce graphe les points bleus sont les transactions dont le prix est
+supérieur à la médiane et les rouges sont celles dont le prix est
+inférieur. A part, X1.transaction.date/X2.house.date, sur lequel on peut
+pas distinguer des clusters, sur les autres plots , on voit nettement
+des clusterS se former dans chacun des covariables plots. La proximité à
+la station la plus proche X3 est une variables fortement corrélée avec
+la X6.longitude.
+
+\hypertarget{i-les-moduxe8les.}{%
+\section{I) Les modèles.}\label{i-les-moduxe8les.}}
+
+Dans la suite on va essayer de generer differents modèles à partir des
+regression logistique sur notre eu de données:
+
+On commencera par un modèle dit ``full'', qui utiliseras toutes les
+variables, ensuite on fera une selection de variables grace une méthode
+``stepwise'', puis on fera des regressions logistiques sous contraintes
+classiques en utilisant ``ridge'' et ``lasso''.
+
+\hypertarget{organisation-du-dataset}{%
+\subsubsection{organisation du dataset}\label{organisation-du-dataset}}
+
+on va partitionner notre jeu de données en training et test avec des
+proportions respectives de 80\% et 20\%.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{1234}\NormalTok{) }\CommentTok{#assure la repetabilité des differents pocessus aleatoire}
+\NormalTok{p =}\StringTok{ }\FloatTok{0.8} \CommentTok{# represente 80% qui va  etre pour le trainin set }
+\NormalTok{ind =}\StringTok{ }\KeywordTok{sample}\NormalTok{(}\DecValTok{2}\NormalTok{, }\KeywordTok{nrow}\NormalTok{(tabmed), }\DataTypeTok{replace =}\NormalTok{ T, }\DataTypeTok{prob =} \KeywordTok{c}\NormalTok{(p,}\DecValTok{1}\OperatorTok{-}\NormalTok{p)) }\CommentTok{## selectionne les indices}
+\CommentTok{#aleatoirent entre 2 groupe, le premiere groupe represente 80 % de l'ensemble }
+\CommentTok{#des indices et le 2e groupe le reste.}
+\NormalTok{tab.train =}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(tabmed[ind }\OperatorTok{==}\StringTok{ }\DecValTok{1}\NormalTok{,]) }\CommentTok{#training dataset}
+\NormalTok{tab.test =}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(tabmed[ind }\OperatorTok{==}\StringTok{ }\DecValTok{2}\NormalTok{,]) }\CommentTok{#test dataset}
+
+\NormalTok{X.train =}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(tab.train[,}\OperatorTok{-}\KeywordTok{dim}\NormalTok{(tab.train)[}\DecValTok{2}\NormalTok{]])}
+\NormalTok{X.test =}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(tab.test[,}\OperatorTok{-}\KeywordTok{dim}\NormalTok{(tab.test)[}\DecValTok{2}\NormalTok{]])}
+\NormalTok{Y.test =}\StringTok{ }\NormalTok{tab.test}\OperatorTok{$}\NormalTok{medHousePriceBin}
+\NormalTok{Y.train =}\StringTok{ }\NormalTok{tab.train}\OperatorTok{$}\NormalTok{medHousePriceBin}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{i.1-modele-full}{%
+\subsection{I.1 Modele full}\label{i.1-modele-full}}
+
+\hypertarget{a-model-full}{%
+\subsubsection{a) model full}\label{a-model-full}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model.full =}\StringTok{ }\KeywordTok{glm}\NormalTok{(medHousePriceBin }\OperatorTok{~}\StringTok{ }\NormalTok{., }\DataTypeTok{data =}\NormalTok{ tab.train, }\DataTypeTok{family =} \StringTok{'binomial'}\NormalTok{)}
+\KeywordTok{summary}\NormalTok{(model.full)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = medHousePriceBin ~ ., family = "binomial", data = tab.train)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.3966  -0.3026   0.1507   0.5368   3.1611  
+## 
+## Coefficients:
+##                                          Estimate Std. Error z value Pr(>|z|)
+## (Intercept)                            -2.404e+03  3.908e+03  -0.615  0.53834
+## X1.transaction.date                     1.381e+00  6.299e-01   2.193  0.02834
+## X2.house.age                           -7.016e-02  1.460e-02  -4.807 1.53e-06
+## X3.distance.to.the.nearest.MRT.station -2.596e-03  5.141e-04  -5.049 4.44e-07
+## X4.number.of.convenience.stores         2.619e-01  8.212e-02   3.189  0.00143
+## X5.latitude                             9.477e+01  2.235e+01   4.241 2.22e-05
+## X6.longitude                           -2.255e+01  3.117e+01  -0.723  0.46946
+##                                           
+## (Intercept)                               
+## X1.transaction.date                    *  
+## X2.house.age                           ***
+## X3.distance.to.the.nearest.MRT.station ***
+## X4.number.of.convenience.stores        ** 
+## X5.latitude                            ***
+## X6.longitude                              
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 467.11  on 336  degrees of freedom
+## Residual deviance: 221.48  on 330  degrees of freedom
+## AIC: 235.48
+## 
+## Number of Fisher Scoring iterations: 7
+\end{verbatim}
+
+Avec un seuil de p-value à 0.01, les variables statistiquement
+significatives sont X2,X3,X4 et X5. De plus le test rejete la varible
+X6.longitude. Ce qui est sans doute du à la corrélation de celle ci avec
+X3.
+
+\hypertarget{b-prediction-avec-le-model-full}{%
+\subsubsection{b) Prediction avec le model
+full}\label{b-prediction-avec-le-model-full}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+ \CommentTok{### prediction}
+\NormalTok{prob =}\StringTok{ }\KeywordTok{predict.glm}\NormalTok{(model.full, }\DataTypeTok{newdata =}\NormalTok{ tab.test,}\DataTypeTok{type =} \StringTok{"response"}\NormalTok{) }\CommentTok{# give the predicted probability}
+\NormalTok{OR_full =}\StringTok{ }\KeywordTok{exp}\NormalTok{(model.full}\OperatorTok{$}\NormalTok{coefficients) }\CommentTok{# odd ratio}
+\NormalTok{OR_full}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                            (Intercept)                    X1.transaction.date 
+##                           0.000000e+00                           3.979501e+00 
+##                           X2.house.age X3.distance.to.the.nearest.MRT.station 
+##                           9.322441e-01                           9.974075e-01 
+##        X4.number.of.convenience.stores                            X5.latitude 
+##                           1.299354e+00                           1.439174e+41 
+##                           X6.longitude 
+##                           1.609538e-10
+\end{verbatim}
+
+Une augmentation de X4 le nombre de magasins de proximité, et la
+latitute X5 ou la date de transaction X1 semble augmenter augmenter le
+prix de la transaction. Tandis que une augmententation des autres
+variables telles que le l'age de maison X2, la longitude X6 ou la
+distance a la station la plus proche X3 semble diminuer le prix de la
+transaction.
+
+\hypertarget{c-performance-du-model-full}{%
+\subsubsection{c) Performance du model
+full}\label{c-performance-du-model-full}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Threshold =}\StringTok{ }\FloatTok{0.5} \CommentTok{# for MAE estimation}
+\NormalTok{Y.pred.full =}\StringTok{  }\KeywordTok{as.integer}\NormalTok{(prob }\OperatorTok{>=}\StringTok{ }\NormalTok{Threshold) }
+\NormalTok{confusion_matrix.full =}\StringTok{ }\KeywordTok{table}\NormalTok{(Y.pred.full,tab.test}\OperatorTok{$}\NormalTok{medHousePriceBin)}
+\NormalTok{confusion_matrix.full}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##            
+## Y.pred.full  0  1
+##           0 33  9
+##           1  8 27
+\end{verbatim}
+
+La matrice de confusion nous donne une performance
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{accuracy.full =}\StringTok{ }\KeywordTok{sum}\NormalTok{(}\KeywordTok{diag}\NormalTok{(confusion_matrix.full))}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix.full)}\OperatorTok{*}\DecValTok{100}\CommentTok{#   }
+\NormalTok{  recall.full =}\StringTok{ }\NormalTok{confusion_matrix.full[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix.full[,}\DecValTok{2}\NormalTok{])}\OperatorTok{*}\DecValTok{100} \CommentTok{#}
+\NormalTok{  precision.full =confusion_matrix.full[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix.full[}\DecValTok{2}\NormalTok{,])}\OperatorTok{*}\DecValTok{100}
+\NormalTok{  error_rate.full =}\StringTok{ }\KeywordTok{sum}\NormalTok{(}\KeywordTok{diag}\NormalTok{(confusion_matrix.full[}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{,}\DecValTok{2}\OperatorTok{:}\DecValTok{1}\NormalTok{]))}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix.full) }\OperatorTok{*}\DecValTok{100} 
+\end{Highlighting}
+\end{Shaded}
+
+Avec une specificité de 80\% et un un recall de 75\% le model full
+prédit assez bien les éléments de differentes classe. Globalement on
+fait une erreur de 22\%, ce qui relativement bas au vu de la taille de
+l'echantillon.
+
+Afin d'évaluer d'avoir une meilleur fiabilité à notre modèle on va
+effecteur une Validation croisée.
+
+\hypertarget{d-k-folds-pour-le-model-full}{%
+\subsubsection{d) k-folds pour le model
+full}\label{d-k-folds-pour-le-model-full}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{##shuffling}
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{1234}\NormalTok{)}
+\NormalTok{rows <-}\StringTok{ }\KeywordTok{sample}\NormalTok{(}\KeywordTok{nrow}\NormalTok{(tabmed)) }\CommentTok{# melange des rows du dataset}
+\NormalTok{tabmed <-}\StringTok{ }\NormalTok{tabmed[rows, ]}
+\CommentTok{## folds}
+\NormalTok{k =}\StringTok{ }\DecValTok{15} \CommentTok{#as.integer(1/(1-r)) ## fold number}
+\NormalTok{fold =}\StringTok{ }\KeywordTok{cut}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{,}\KeywordTok{nrow}\NormalTok{(tabmed)), }\DataTypeTok{breaks =}\NormalTok{ k,}\DataTypeTok{labels =} \OtherTok{FALSE}\NormalTok{) }\CommentTok{#organisations des lignes du}
+\CommentTok{#dataset en plusieurs fold}
+\CommentTok{#initialisation des vectueurs qui va contenier les performances a chaque etape}
+\NormalTok{accuracyk.full =}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+\NormalTok{recallk.full =}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+\NormalTok{precisionk.full =}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+\NormalTok{error_ratek.full =}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\NormalTok{k) \{}
+\NormalTok{  test_rows =}\StringTok{ }\KeywordTok{which}\NormalTok{(fold }\OperatorTok{==}\StringTok{ }\NormalTok{i,}\DataTypeTok{arr.ind =} \OtherTok{TRUE}\NormalTok{) }\CommentTok{#selection des lignes qui correspondent }
+  \CommentTok{# au fold i}
+\NormalTok{  tab.testk =}\StringTok{ }\NormalTok{tabmed[test_rows,]}
+\NormalTok{  tab.traink =}\StringTok{ }\NormalTok{tabmed[}\OperatorTok{-}\NormalTok{test_rows,]}
+  \CommentTok{### regression logistic }
+\NormalTok{  model.fullk=}\KeywordTok{glm}\NormalTok{(medHousePriceBin}\OperatorTok{~}\NormalTok{.,}\DataTypeTok{family=}\NormalTok{binomial,}\DataTypeTok{data =}\NormalTok{ tab.traink)}
+  \CommentTok{### prediction}
+\NormalTok{  prob =}\StringTok{ }\KeywordTok{predict.glm}\NormalTok{(model.fullk, }\DataTypeTok{newdata =}\NormalTok{ tab.testk,}\DataTypeTok{type =} \StringTok{"response"}\NormalTok{) }\CommentTok{# give probability}
+\NormalTok{  Y.pred.full =}\StringTok{  }\KeywordTok{as.integer}\NormalTok{(prob }\OperatorTok{>=}\StringTok{ }\NormalTok{Threshold)  }\CommentTok{#MAE estimation}
+\NormalTok{  confusion_matrix =}\StringTok{ }\KeywordTok{table}\NormalTok{(Y.pred.full,tab.testk}\OperatorTok{$}\NormalTok{medHousePriceBin)}
+\NormalTok{  accuracyk.full[i] =}\StringTok{ }\KeywordTok{sum}\NormalTok{(}\KeywordTok{diag}\NormalTok{(confusion_matrix))}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix)}\OperatorTok{*}\DecValTok{100}\CommentTok{#   }
+\NormalTok{  recallk.full[i] =}\StringTok{ }\NormalTok{confusion_matrix[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix[,}\DecValTok{2}\NormalTok{])}\OperatorTok{*}\DecValTok{100} \CommentTok{#}
+\NormalTok{  precisionk.full[i] =confusion_matrix[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix[}\DecValTok{2}\NormalTok{,])}\OperatorTok{*}\DecValTok{100}
+\NormalTok{  error_ratek.full[i] =}\StringTok{ }\KeywordTok{sum}\NormalTok{(}\KeywordTok{diag}\NormalTok{(confusion_matrix[}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{,}\DecValTok{2}\OperatorTok{:}\DecValTok{1}\NormalTok{]))}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix) }\OperatorTok{*}\DecValTok{100} 
+\NormalTok{\}}
+\KeywordTok{mean}\NormalTok{(recallk.full)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 86.26258
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mean}\NormalTok{(error_ratek.full)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 18.11287
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mean}\NormalTok{(accuracyk.full)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 81.88713
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mean}\NormalTok{(precisionk.full)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 78.74136
+\end{verbatim}
+
+En utilisant le k-fold on évalue la precision du model. nous donne une
+bonne performance global. Avec une performance global de 80\% et un taux
+d'erreur d'environ 20\%.
+
+\hypertarget{i.2-regression-logistique-avec-selection-de-variable-stepwise}{%
+\subsection{I.2) Regression Logistique avec selection de variable
+Stepwise}\label{i.2-regression-logistique-avec-selection-de-variable-stepwise}}
+
+On a vu que certaines variables, comme X6.longitude était pas
+significative dans notre model full,dans cette partie, on va effectuer
+une selection de Variables, puis une regression logistique sur ces
+dernières.
+
+\hypertarget{a-resstep-model}{%
+\subsubsection{a) Resstep Model}\label{a-resstep-model}}
+
+Selection des variables à partir du model précédent.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{resstep<-}\KeywordTok{step}\NormalTok{(model.full,}\DataTypeTok{direction=}\StringTok{'both'}\NormalTok{); }\KeywordTok{summary}\NormalTok{(resstep)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Start:  AIC=235.48
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude + X6.longitude
+## 
+##                                          Df Deviance    AIC
+## - X6.longitude                            1   222.02 234.02
+## <none>                                        221.48 235.48
+## - X1.transaction.date                     1   226.41 238.41
+## - X4.number.of.convenience.stores         1   232.81 244.81
+## - X5.latitude                             1   242.44 254.44
+## - X2.house.age                            1   248.18 260.18
+## - X3.distance.to.the.nearest.MRT.station  1   265.27 277.27
+## 
+## Step:  AIC=234.02
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude
+## 
+##                                          Df Deviance    AIC
+## <none>                                        222.02 234.02
+## + X6.longitude                            1   221.48 235.48
+## - X1.transaction.date                     1   226.74 236.74
+## - X4.number.of.convenience.stores         1   232.94 242.94
+## - X5.latitude                             1   243.59 253.59
+## - X2.house.age                            1   249.18 259.18
+## - X3.distance.to.the.nearest.MRT.station  1   279.21 289.21
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = medHousePriceBin ~ X1.transaction.date + X2.house.age + 
+##     X3.distance.to.the.nearest.MRT.station + X4.number.of.convenience.stores + 
+##     X5.latitude, family = "binomial", data = tab.train)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.3391  -0.2916   0.1624   0.5223   3.1496  
+## 
+## Coefficients:
+##                                          Estimate Std. Error z value Pr(>|z|)
+## (Intercept)                            -5.072e+03  1.404e+03  -3.612 0.000304
+## X1.transaction.date                     1.348e+00  6.286e-01   2.145 0.031950
+## X2.house.age                           -7.077e-02  1.461e-02  -4.843 1.28e-06
+## X3.distance.to.the.nearest.MRT.station -2.417e-03  4.475e-04  -5.400 6.66e-08
+## X4.number.of.convenience.stores         2.392e-01  7.401e-02   3.232 0.001231
+## X5.latitude                             9.448e+01  2.205e+01   4.284 1.83e-05
+##                                           
+## (Intercept)                            ***
+## X1.transaction.date                    *  
+## X2.house.age                           ***
+## X3.distance.to.the.nearest.MRT.station ***
+## X4.number.of.convenience.stores        ** 
+## X5.latitude                            ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 467.11  on 336  degrees of freedom
+## Residual deviance: 222.02  on 331  degrees of freedom
+## AIC: 234.02
+## 
+## Number of Fisher Scoring iterations: 7
+\end{verbatim}
+
+Sans surprise, comme vu dans le TP2, la variable X6.longitude a été
+éliminée dans la sélection de variables, ce qui augmente la
+significaivité des autres variables, c'est ce qu'on remarque en
+comparant les test effectués sur une régression logistique de type full
+(toutes les variables) et les test sur une régression logistique de type
+stepwise.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{OR_step=}\KeywordTok{exp}\NormalTok{(resstep}\OperatorTok{$}\NormalTok{coefficients) }\CommentTok{# give the odd ratios on stepwise model}
+\NormalTok{OR_step}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                            (Intercept)                    X1.transaction.date 
+##                           0.000000e+00                           3.850789e+00 
+##                           X2.house.age X3.distance.to.the.nearest.MRT.station 
+##                           9.316744e-01                           9.975862e-01 
+##        X4.number.of.convenience.stores                            X5.latitude 
+##                           1.270203e+00                           1.074748e+41
+\end{verbatim}
+
+Comme precedemment, les variables X1.transaction date,
+X4.convenience.stores et X5.latitude, leur augmentation semble entrainer
+une augmentation de la probabilité que medHousePriceBin soit au-dessus
+de la médiane du prix de vente, au risque de 5\%.
+
+\hypertarget{b-pruxe9diction-sur-le-model-stepwise}{%
+\subsection{b ) Prédiction sur le model
+stepwise}\label{b-pruxe9diction-sur-le-model-stepwise}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{prob=}\StringTok{ }\KeywordTok{predict.glm}\NormalTok{(resstep, }\DataTypeTok{newdata =}\NormalTok{ tab.test,}\DataTypeTok{type =} \StringTok{"response"}\NormalTok{) }\CommentTok{# give the predicted prob on the stepwise model}
+\NormalTok{pred_step=}\KeywordTok{as.numeric}\NormalTok{(prob}\OperatorTok{>}\NormalTok{Threshold) }\CommentTok{#}
+\end{Highlighting}
+\end{Shaded}
+
+On calcule les prédictions contruites à partir de ce modèle pred\_step
+qui donne la valeur des \(\hat\eta\) pour tous les individus dans le
+data set test. pred\_step vaut 1 si pred\_step \textgreater{} 1/2.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{confusion_matrix.step =}\StringTok{ }\KeywordTok{table}\NormalTok{(pred_step,tab.test}\OperatorTok{$}\NormalTok{medHousePriceBin)}
+\NormalTok{confusion_matrix.step}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          
+## pred_step  0  1
+##         0 33  7
+##         1  8 29
+\end{verbatim}
+
+La matrice de confusion nous montre qu'on predit mieux de vrai
+evenements qu'on en fait des erreurs.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pred.accuracy.step =}\StringTok{ }\KeywordTok{sum}\NormalTok{(}\KeywordTok{diag}\NormalTok{(confusion_matrix.step))}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix.step)}\OperatorTok{*}\DecValTok{100}
+\CommentTok{#prediction accuracy}
+\NormalTok{pred.recall.step =}\StringTok{ }\NormalTok{confusion_matrix.step[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix.step[,}\DecValTok{2}\NormalTok{])}\OperatorTok{*}\DecValTok{100} 
+\CommentTok{# probabilité que la prediction des hauts prix soit correctes }
+\NormalTok{pred.specifity.step =}\StringTok{ }\NormalTok{confusion_matrix.step[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix.step[,}\DecValTok{1}\NormalTok{])}\OperatorTok{*}\DecValTok{100} 
+\CommentTok{# probabilité que la prediction des bas prix soit correctes }
+\NormalTok{pred.precision.step =}\StringTok{ }\NormalTok{confusion_matrix.step[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix.step[}\DecValTok{2}\NormalTok{,])}\OperatorTok{*}\DecValTok{100}
+\CommentTok{# }
+\NormalTok{pred.error_rate.step =}\StringTok{ }\KeywordTok{sum}\NormalTok{(}\KeywordTok{diag}\NormalTok{(confusion_matrix.step[}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{,}\DecValTok{2}\OperatorTok{:}\DecValTok{1}\NormalTok{]))}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix.step) }\OperatorTok{*}\DecValTok{100} \CommentTok{# probabilité d'obtenir une erreur}
+
+\NormalTok{pred.accuracy.step}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 80.51948
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pred.recall.step}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 80.55556
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pred.specifity.step}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 80.4878
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pred.error_rate.step}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 19.48052
+\end{verbatim}
+
+Comme dit precedemment mais avec des chiffres, on effectue des bonnes
+prédictions en moyenne à 80.5\%. Ce qui est pas un bon score au vu de la
+taille de l'échantillon.
+
+\hypertarget{courbe-roc-et-auc}{%
+\subsubsection{Courbe ROC et AUC}\label{courbe-roc-et-auc}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(ROCR)}
+
+\NormalTok{pred=}\KeywordTok{prediction}\NormalTok{(pred_step,tab.test}\OperatorTok{$}\NormalTok{medHousePriceBin)}
+\NormalTok{perf=}\KeywordTok{performance}\NormalTok{(pred, }\StringTok{"tpr"}\NormalTok{ ,}\StringTok{"fpr"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(perf)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{TP3_files/figure-latex/unnamed-chunk-15-1.pdf}
+
+La courbe est assez proche du coin supérieur gauche, ainsi le modèle
+semble capturer le plus possible de vrais évènements avec le moins
+possible de faux évènements.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ROC_auc=}\KeywordTok{performance}\NormalTok{(pred,}\StringTok{"auc"}\NormalTok{)}
+\NormalTok{AUC=ROC_auc}\OperatorTok{@}\NormalTok{y.values[[}\DecValTok{1}\NormalTok{]]}
+\KeywordTok{print}\NormalTok{(AUC)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.8052168
+\end{verbatim}
+
+L'AUC est de 0.805.
+
+\hypertarget{c-k-fold-pour-le-model-stepwise}{%
+\subsubsection{c) k-fold pour le model
+stepwise}\label{c-k-fold-pour-le-model-stepwise}}
+
+On effectue 15 folds
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{rows=}\KeywordTok{sample}\NormalTok{(}\KeywordTok{nrow}\NormalTok{(tabmed))}
+\NormalTok{tabmedk=tabmed[rows,]}
+
+\CommentTok{## folds}
+
+\NormalTok{k=}\DecValTok{15}
+\NormalTok{fold=}\KeywordTok{cut}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{,}\KeywordTok{nrow}\NormalTok{(tabmed)),}\DataTypeTok{breaks=}\NormalTok{k, }\DataTypeTok{labels=}\OtherTok{FALSE}\NormalTok{)}
+\CommentTok{##}
+\NormalTok{accuracyk.step=}\KeywordTok{c}\NormalTok{()}
+\NormalTok{recallk.step=}\KeywordTok{c}\NormalTok{()}
+\NormalTok{error_ratek.step=}\KeywordTok{c}\NormalTok{()}
+\NormalTok{precisionk.step=}\KeywordTok{c}\NormalTok{()}
+
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\NormalTok{k)\{}
+\NormalTok{  test_rows=}\KeywordTok{which}\NormalTok{(fold}\OperatorTok{==}\NormalTok{i, }\DataTypeTok{arr.ind=}\OtherTok{TRUE}\NormalTok{)}
+\NormalTok{  tab.testk=tabmedk[test_rows,]}
+\NormalTok{  tab.traink=tabmedk[}\OperatorTok{-}\NormalTok{test_rows,]}
+  
+  \CommentTok{# regression logistique}
+\NormalTok{  model.full=}\KeywordTok{glm}\NormalTok{(medHousePriceBin}\OperatorTok{~}\NormalTok{., }\DataTypeTok{family=}\NormalTok{binomial, }\DataTypeTok{data=}\NormalTok{tab.traink)}
+\NormalTok{  model.stepk=}\KeywordTok{step}\NormalTok{(model.full,}\DataTypeTok{direction=}\StringTok{'both'}\NormalTok{)}
+  
+  \CommentTok{# prediction}
+  
+\NormalTok{  pred_stepk=}\KeywordTok{predict.glm}\NormalTok{(model.stepk, }\DataTypeTok{newdata=}\NormalTok{ tab.testk, }\DataTypeTok{type=}\StringTok{"response"}\NormalTok{)}
+\NormalTok{  Y.pred.step=}\KeywordTok{as.numeric}\NormalTok{(pred_stepk}\OperatorTok{>=}\NormalTok{Threshold)}
+\NormalTok{  confusion_matrix=}\KeywordTok{table}\NormalTok{(Y.pred.step, tab.testk}\OperatorTok{$}\NormalTok{medHousePriceBin)}
+\NormalTok{  accuracyk.step[i]=}\KeywordTok{sum}\NormalTok{(}\KeywordTok{diag}\NormalTok{(confusion_matrix))}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix)}\OperatorTok{*}\DecValTok{100} \CommentTok{# prediction accuracy }
+\NormalTok{  precisionk.step[i] =confusion_matrix[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix[}\DecValTok{2}\NormalTok{,])}\OperatorTok{*}\DecValTok{100}
+\NormalTok{  recallk.step[i]=confusion_matrix[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix[,}\DecValTok{2}\NormalTok{])}\OperatorTok{*}\DecValTok{100} 
+\NormalTok{  error_ratek.step[i]=}\KeywordTok{sum}\NormalTok{(}\KeywordTok{diag}\NormalTok{(confusion_matrix[}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{,}\DecValTok{2}\OperatorTok{:}\DecValTok{1}\NormalTok{]))}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix)}\OperatorTok{*}\DecValTok{100}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Start:  AIC=290.05
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude + X6.longitude
+## 
+##                                          Df Deviance    AIC
+## - X6.longitude                            1   276.11 288.11
+## <none>                                        276.05 290.05
+## - X1.transaction.date                     1   278.44 290.44
+## - X4.number.of.convenience.stores         1   284.80 296.80
+## - X5.latitude                             1   297.70 309.70
+## - X2.house.age                            1   303.28 315.28
+## - X3.distance.to.the.nearest.MRT.station  1   318.97 330.97
+## 
+## Step:  AIC=288.11
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude
+## 
+##                                          Df Deviance    AIC
+## <none>                                        276.11 288.11
+## - X1.transaction.date                     1   278.46 288.46
+## + X6.longitude                            1   276.05 290.05
+## - X4.number.of.convenience.stores         1   284.81 294.81
+## - X5.latitude                             1   298.19 308.19
+## - X2.house.age                            1   303.44 313.44
+## - X3.distance.to.the.nearest.MRT.station  1   337.69 347.69
+## Start:  AIC=264.43
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude + X6.longitude
+## 
+##                                          Df Deviance    AIC
+## - X6.longitude                            1   250.75 262.75
+## <none>                                        250.43 264.43
+## - X1.transaction.date                     1   256.57 268.57
+## - X4.number.of.convenience.stores         1   257.29 269.29
+## - X5.latitude                             1   276.42 288.42
+## - X2.house.age                            1   281.40 293.40
+## - X3.distance.to.the.nearest.MRT.station  1   315.76 327.76
+## 
+## Step:  AIC=262.75
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude
+## 
+##                                          Df Deviance    AIC
+## <none>                                        250.75 262.75
+## + X6.longitude                            1   250.43 264.43
+## - X1.transaction.date                     1   256.72 266.72
+## - X4.number.of.convenience.stores         1   257.33 267.33
+## - X5.latitude                             1   277.19 287.19
+## - X2.house.age                            1   281.74 291.74
+## - X3.distance.to.the.nearest.MRT.station  1   334.27 344.27
+## Start:  AIC=298.95
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude + X6.longitude
+## 
+##                                          Df Deviance    AIC
+## - X6.longitude                            1   285.27 297.27
+## <none>                                        284.95 298.95
+## - X1.transaction.date                     1   289.52 301.52
+## - X4.number.of.convenience.stores         1   298.06 310.06
+## - X5.latitude                             1   303.16 315.16
+## - X2.house.age                            1   306.47 318.47
+## - X3.distance.to.the.nearest.MRT.station  1   327.37 339.37
+## 
+## Step:  AIC=297.27
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude
+## 
+##                                          Df Deviance    AIC
+## <none>                                        285.27 297.27
+## + X6.longitude                            1   284.95 298.95
+## - X1.transaction.date                     1   289.68 299.68
+## - X4.number.of.convenience.stores         1   298.06 308.06
+## - X5.latitude                             1   303.90 313.90
+## - X2.house.age                            1   307.16 317.16
+## - X3.distance.to.the.nearest.MRT.station  1   344.57 354.57
+## Start:  AIC=292.54
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude + X6.longitude
+## 
+##                                          Df Deviance    AIC
+## - X6.longitude                            1   278.67 290.67
+## <none>                                        278.54 292.54
+## - X1.transaction.date                     1   284.62 296.62
+## - X4.number.of.convenience.stores         1   287.68 299.68
+## - X5.latitude                             1   298.74 310.74
+## - X2.house.age                            1   310.37 322.37
+## - X3.distance.to.the.nearest.MRT.station  1   326.06 338.06
+## 
+## Step:  AIC=290.67
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude
+## 
+##                                          Df Deviance    AIC
+## <none>                                        278.67 290.67
+## + X6.longitude                            1   278.54 292.54
+## - X1.transaction.date                     1   284.67 294.67
+## - X4.number.of.convenience.stores         1   287.68 297.68
+## - X5.latitude                             1   299.42 309.42
+## - X2.house.age                            1   310.73 320.73
+## - X3.distance.to.the.nearest.MRT.station  1   345.77 355.77
+## Start:  AIC=299.9
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude + X6.longitude
+## 
+##                                          Df Deviance    AIC
+## - X6.longitude                            1   286.07 298.07
+## <none>                                        285.90 299.90
+## - X1.transaction.date                     1   288.64 300.64
+## - X4.number.of.convenience.stores         1   295.19 307.19
+## - X5.latitude                             1   309.99 321.99
+## - X2.house.age                            1   313.17 325.17
+## - X3.distance.to.the.nearest.MRT.station  1   329.96 341.96
+## 
+## Step:  AIC=298.07
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude
+## 
+##                                          Df Deviance    AIC
+## <none>                                        286.07 298.07
+## - X1.transaction.date                     1   288.75 298.75
+## + X6.longitude                            1   285.90 299.90
+## - X4.number.of.convenience.stores         1   295.19 305.19
+## - X5.latitude                             1   310.75 320.75
+## - X2.house.age                            1   313.76 323.76
+## - X3.distance.to.the.nearest.MRT.station  1   347.30 357.30
+## Start:  AIC=299.55
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude + X6.longitude
+## 
+##                                          Df Deviance    AIC
+## - X6.longitude                            1   285.94 297.94
+## <none>                                        285.55 299.55
+## - X1.transaction.date                     1   290.16 302.16
+## - X4.number.of.convenience.stores         1   296.08 308.08
+## - X5.latitude                             1   305.64 317.64
+## - X2.house.age                            1   310.43 322.43
+## - X3.distance.to.the.nearest.MRT.station  1   329.63 341.63
+## 
+## Step:  AIC=297.94
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude
+## 
+##                                          Df Deviance    AIC
+## <none>                                        285.94 297.94
+## + X6.longitude                            1   285.55 299.55
+## - X1.transaction.date                     1   290.37 300.37
+## - X4.number.of.convenience.stores         1   296.14 306.14
+## - X5.latitude                             1   306.49 316.49
+## - X2.house.age                            1   311.14 321.14
+## - X3.distance.to.the.nearest.MRT.station  1   345.91 355.91
+## Start:  AIC=301.03
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude + X6.longitude
+## 
+##                                          Df Deviance    AIC
+## - X6.longitude                            1   287.16 299.16
+## <none>                                        287.03 301.03
+## - X1.transaction.date                     1   290.23 302.23
+## - X4.number.of.convenience.stores         1   296.86 308.86
+## - X5.latitude                             1   305.59 317.59
+## - X2.house.age                            1   310.06 322.06
+## - X3.distance.to.the.nearest.MRT.station  1   334.42 346.42
+## 
+## Step:  AIC=299.16
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude
+## 
+##                                          Df Deviance    AIC
+## <none>                                        287.16 299.16
+## - X1.transaction.date                     1   290.30 300.30
+## + X6.longitude                            1   287.03 301.03
+## - X4.number.of.convenience.stores         1   296.88 306.88
+## - X5.latitude                             1   306.13 316.13
+## - X2.house.age                            1   310.45 320.45
+## - X3.distance.to.the.nearest.MRT.station  1   352.85 362.85
+## Start:  AIC=301.42
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude + X6.longitude
+## 
+##                                          Df Deviance    AIC
+## - X6.longitude                            1   287.75 299.75
+## <none>                                        287.42 301.42
+## - X1.transaction.date                     1   291.41 303.41
+## - X4.number.of.convenience.stores         1   297.69 309.69
+## - X5.latitude                             1   306.90 318.90
+## - X2.house.age                            1   311.93 323.93
+## - X3.distance.to.the.nearest.MRT.station  1   333.57 345.57
+## 
+## Step:  AIC=299.75
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude
+## 
+##                                          Df Deviance    AIC
+## <none>                                        287.75 299.75
+## + X6.longitude                            1   287.42 301.42
+## - X1.transaction.date                     1   291.64 301.64
+## - X4.number.of.convenience.stores         1   297.69 307.69
+## - X5.latitude                             1   307.83 317.83
+## - X2.house.age                            1   312.58 322.58
+## - X3.distance.to.the.nearest.MRT.station  1   349.05 359.05
+## Start:  AIC=302.77
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude + X6.longitude
+## 
+##                                          Df Deviance    AIC
+## - X6.longitude                            1   288.80 300.80
+## <none>                                        288.77 302.77
+## - X1.transaction.date                     1   293.70 305.70
+## - X4.number.of.convenience.stores         1   297.50 309.50
+## - X5.latitude                             1   312.84 324.84
+## - X2.house.age                            1   322.49 334.49
+## - X3.distance.to.the.nearest.MRT.station  1   332.82 344.82
+## 
+## Step:  AIC=300.8
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude
+## 
+##                                          Df Deviance    AIC
+## <none>                                        288.80 300.80
+## + X6.longitude                            1   288.77 302.77
+## - X1.transaction.date                     1   293.70 303.70
+## - X4.number.of.convenience.stores         1   297.64 307.64
+## - X5.latitude                             1   313.38 323.38
+## - X2.house.age                            1   322.81 332.81
+## - X3.distance.to.the.nearest.MRT.station  1   350.97 360.97
+## Start:  AIC=291.73
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude + X6.longitude
+## 
+##                                          Df Deviance    AIC
+## - X6.longitude                            1   278.10 290.10
+## <none>                                        277.73 291.73
+## - X1.transaction.date                     1   280.63 292.63
+## - X4.number.of.convenience.stores         1   290.68 302.68
+## - X5.latitude                             1   300.24 312.24
+## - X2.house.age                            1   308.75 320.75
+## - X3.distance.to.the.nearest.MRT.station  1   320.21 332.21
+## 
+## Step:  AIC=290.1
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude
+## 
+##                                          Df Deviance    AIC
+## <none>                                        278.10 290.10
+## - X1.transaction.date                     1   280.89 290.89
+## + X6.longitude                            1   277.73 291.73
+## - X4.number.of.convenience.stores         1   290.68 300.68
+## - X5.latitude                             1   301.05 311.05
+## - X2.house.age                            1   309.45 319.45
+## - X3.distance.to.the.nearest.MRT.station  1   335.06 345.06
+## Start:  AIC=302.77
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude + X6.longitude
+## 
+##                                          Df Deviance    AIC
+## - X6.longitude                            1   288.84 300.84
+## <none>                                        288.77 302.77
+## - X1.transaction.date                     1   291.89 303.89
+## - X4.number.of.convenience.stores         1   299.13 311.13
+## - X5.latitude                             1   313.00 325.00
+## - X2.house.age                            1   316.93 328.93
+## - X3.distance.to.the.nearest.MRT.station  1   332.48 344.48
+## 
+## Step:  AIC=300.84
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude
+## 
+##                                          Df Deviance    AIC
+## <none>                                        288.84 300.84
+## - X1.transaction.date                     1   291.91 301.91
+## + X6.longitude                            1   288.77 302.77
+## - X4.number.of.convenience.stores         1   299.17 309.17
+## - X5.latitude                             1   313.52 323.52
+## - X2.house.age                            1   317.23 327.23
+## - X3.distance.to.the.nearest.MRT.station  1   350.16 360.16
+## Start:  AIC=299.24
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude + X6.longitude
+## 
+##                                          Df Deviance    AIC
+## - X6.longitude                            1   285.74 297.74
+## <none>                                        285.24 299.24
+## - X1.transaction.date                     1   288.20 300.20
+## - X4.number.of.convenience.stores         1   290.33 302.33
+## - X5.latitude                             1   305.97 317.97
+## - X2.house.age                            1   312.34 324.34
+## - X3.distance.to.the.nearest.MRT.station  1   339.14 351.14
+## 
+## Step:  AIC=297.74
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude
+## 
+##                                          Df Deviance    AIC
+## <none>                                        285.74 297.74
+## - X1.transaction.date                     1   288.60 298.60
+## + X6.longitude                            1   285.24 299.24
+## - X4.number.of.convenience.stores         1   290.50 300.50
+## - X5.latitude                             1   307.29 317.29
+## - X2.house.age                            1   313.13 323.13
+## - X3.distance.to.the.nearest.MRT.station  1   357.05 367.05
+## Start:  AIC=300.93
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude + X6.longitude
+## 
+##                                          Df Deviance    AIC
+## - X6.longitude                            1   287.28 299.28
+## <none>                                        286.93 300.93
+## - X1.transaction.date                     1   291.18 303.18
+## - X4.number.of.convenience.stores         1   293.19 305.19
+## - X5.latitude                             1   303.52 315.52
+## - X2.house.age                            1   312.54 324.54
+## - X3.distance.to.the.nearest.MRT.station  1   342.55 354.55
+## 
+## Step:  AIC=299.28
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude
+## 
+##                                          Df Deviance    AIC
+## <none>                                        287.28 299.28
+## + X6.longitude                            1   286.93 300.93
+## - X1.transaction.date                     1   291.40 301.40
+## - X4.number.of.convenience.stores         1   293.20 303.20
+## - X5.latitude                             1   304.24 314.24
+## - X2.house.age                            1   313.05 323.05
+## - X3.distance.to.the.nearest.MRT.station  1   361.60 371.60
+## Start:  AIC=299.58
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude + X6.longitude
+## 
+##                                          Df Deviance    AIC
+## - X6.longitude                            1   285.59 297.59
+## <none>                                        285.58 299.58
+## - X1.transaction.date                     1   291.40 303.40
+## - X4.number.of.convenience.stores         1   294.74 306.74
+## - X5.latitude                             1   309.99 321.99
+## - X2.house.age                            1   315.86 327.86
+## - X3.distance.to.the.nearest.MRT.station  1   326.53 338.53
+## 
+## Step:  AIC=297.59
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude
+## 
+##                                          Df Deviance    AIC
+## <none>                                        285.59 297.59
+## + X6.longitude                            1   285.58 299.58
+## - X1.transaction.date                     1   291.41 301.41
+## - X4.number.of.convenience.stores         1   294.90 304.90
+## - X5.latitude                             1   310.27 320.27
+## - X2.house.age                            1   316.04 326.04
+## - X3.distance.to.the.nearest.MRT.station  1   343.95 353.95
+## Start:  AIC=294.49
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude + X6.longitude
+## 
+##                                          Df Deviance    AIC
+## - X6.longitude                            1   280.68 292.68
+## <none>                                        280.49 294.49
+## - X1.transaction.date                     1   287.31 299.31
+## - X4.number.of.convenience.stores         1   291.83 303.83
+## - X5.latitude                             1   303.12 315.12
+## - X2.house.age                            1   307.53 319.53
+## - X3.distance.to.the.nearest.MRT.station  1   327.56 339.56
+## 
+## Step:  AIC=292.68
+## medHousePriceBin ~ X1.transaction.date + X2.house.age + X3.distance.to.the.nearest.MRT.station + 
+##     X4.number.of.convenience.stores + X5.latitude
+## 
+##                                          Df Deviance    AIC
+## <none>                                        280.68 292.68
+## + X6.longitude                            1   280.49 294.49
+## - X1.transaction.date                     1   287.39 297.39
+## - X4.number.of.convenience.stores         1   291.84 301.84
+## - X5.latitude                             1   303.87 313.87
+## - X2.house.age                            1   308.05 318.05
+## - X3.distance.to.the.nearest.MRT.station  1   344.75 354.75
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mean}\NormalTok{(recallk.step)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 87.42318
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mean}\NormalTok{(error_ratek.step)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 17.60141
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mean}\NormalTok{(accuracyk.step)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 82.39859
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mean}\NormalTok{(precisionk.step)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 80.56085
+\end{verbatim}
+
+En utilisant la validation croisée, on remarque que nous avons une
+performance globale qui se situe autour de 80\%, avec un taux d'erreur
+autour de 20\%.
+
+\hypertarget{i.3-ridge-regression}{%
+\subsection{I.3 Ridge regression}\label{i.3-ridge-regression}}
+
+On effectue ici une regression ridge. \#\#\# a )Ridge model
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{grid =}\StringTok{ }\DecValTok{10}\OperatorTok{^}\KeywordTok{seq}\NormalTok{(}\DecValTok{5}\NormalTok{,}\OperatorTok{-}\DecValTok{2}\NormalTok{,}\DataTypeTok{length =} \DecValTok{100}\NormalTok{) }\CommentTok{# sequence des lambda}
+\NormalTok{model.ridge <-}\StringTok{ }\KeywordTok{glmnet}\NormalTok{(X.train,Y.train,}\DataTypeTok{alpha=}\DecValTok{0}\NormalTok{,}\DataTypeTok{lambda =}\NormalTok{ grid,}\DataTypeTok{family =} \StringTok{"binomial"}\NormalTok{) }\CommentTok{# model}
+\KeywordTok{plot}\NormalTok{(model.ridge,}\DataTypeTok{xvar=}\StringTok{"lambda"}\NormalTok{,}\DataTypeTok{type=}\StringTok{"l"}\NormalTok{,}\DataTypeTok{col=}\DecValTok{1}\OperatorTok{:}\KeywordTok{nrow}\NormalTok{(tab.train)}\OperatorTok{-}\DecValTok{1}\NormalTok{);}\KeywordTok{legend}\NormalTok{(}\StringTok{"topright"}\NormalTok{                                                            ,}\DataTypeTok{legend=}\KeywordTok{colnames}\NormalTok{(tab.train[,}\DecValTok{1}\OperatorTok{:}\KeywordTok{ncol}\NormalTok{(tab.train)}\OperatorTok{-}\DecValTok{1}\NormalTok{]), }\DataTypeTok{col=}\DecValTok{1}\OperatorTok{:}\DecValTok{10}\NormalTok{, }\DataTypeTok{lty=}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{TP3_files/figure-latex/unnamed-chunk-18-1.pdf}
+
+\hypertarget{b-selection-du-lambda-par-cross-validation}{%
+\subsubsection{\texorpdfstring{b) Selection du \(\lambda\) par cross
+validation}{b) Selection du \textbackslash lambda par cross validation}}\label{b-selection-du-lambda-par-cross-validation}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{####################### cross validation}
+\NormalTok{ridge.cv.out<-}\KeywordTok{cv.glmnet}\NormalTok{(X.train, Y.train, }\DataTypeTok{alpha =} \DecValTok{0}\NormalTok{,}\DataTypeTok{nfolds =} \DecValTok{10}\NormalTok{,}\DataTypeTok{family =} \StringTok{"binomial"}\NormalTok{); ridge.cv.out }\CommentTok{# on sélectionne la meilleure valeur de lambda par validation croisée}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:  cv.glmnet(x = X.train, y = Y.train, nfolds = 10, alpha = 0, family = "binomial") 
+## 
+## Measure: Binomial Deviance 
+## 
+##      Lambda Measure      SE Nonzero
+## min 0.02884  0.7427 0.03697       6
+## 1se 0.05531  0.7756 0.03343       6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ridge.lamb.min<-ridge.cv.out}\OperatorTok{$}\NormalTok{lambda.min }\CommentTok{# le meilleur lambda est celui qui produit the min MSE}
+\end{Highlighting}
+\end{Shaded}
+
+On selectionne le modele le lambda qui minimise le MSE pour notre
+modèle. On effectue 10 folds.
+
+\hypertarget{c-prediction-du-model-ridge}{%
+\subsubsection{c) Prediction du model
+Ridge}\label{c-prediction-du-model-ridge}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ridge.pred <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(model.ridge, }\DataTypeTok{s =}\NormalTok{ ridge.lamb.min, }\DataTypeTok{newx =}\NormalTok{ X.test,}\DataTypeTok{type =} \StringTok{'response'}\NormalTok{)}
+\NormalTok{Y.pred.ridge =}\StringTok{  }\KeywordTok{as.integer}\NormalTok{(ridge.pred }\OperatorTok{>=}\StringTok{ }\NormalTok{Threshold)}
+\NormalTok{confusion_matrix.ridge =}\StringTok{ }\KeywordTok{table}\NormalTok{(Y.pred.ridge,Y.test) }\CommentTok{# matrice de confusion}
+\NormalTok{confusion_matrix.ridge}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             Y.test
+## Y.pred.ridge  0  1
+##            0 31  8
+##            1 10 28
+\end{verbatim}
+
+\hypertarget{d-performance-du-model}{%
+\subsubsection{d) Performance du model}\label{d-performance-du-model}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pred.accuracy.ridge =}\StringTok{ }\KeywordTok{sum}\NormalTok{(}\KeywordTok{diag}\NormalTok{(confusion_matrix.ridge))}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix.ridge)}\OperatorTok{*}\DecValTok{100}\CommentTok{#   prediction accuracy}
+\NormalTok{pred.recall.ridge =}\StringTok{ }\NormalTok{confusion_matrix.ridge[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix.ridge[,}\DecValTok{2}\NormalTok{])}\OperatorTok{*}\DecValTok{100} \CommentTok{# proportion des hauts prix bien predit }
+\NormalTok{pred.specifity.ridge =}\StringTok{ }\NormalTok{confusion_matrix.ridge[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix.ridge[,}\DecValTok{1}\NormalTok{])}\OperatorTok{*}\DecValTok{100} \CommentTok{# proportion des bas prix bien predits}
+\NormalTok{pred.precision.ridge =}\StringTok{ }\NormalTok{confusion_matrix.ridge[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix.ridge[}\DecValTok{2}\NormalTok{,])}\OperatorTok{*}\DecValTok{100}
+\NormalTok{pred.error_rate.ridge =}
+\KeywordTok{sum}\NormalTok{(}\KeywordTok{diag}\NormalTok{(confusion_matrix.ridge[}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{,}\DecValTok{2}\OperatorTok{:}\DecValTok{1}\NormalTok{]))}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix.ridge) }\OperatorTok{*}\DecValTok{100} \CommentTok{# proportion des mauvaises predictions}
+
+\NormalTok{pred.accuracy.ridge}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 76.62338
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pred.recall.ridge}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 77.77778
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pred.specifity.ridge}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 75.60976
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pred.error_rate.ridge}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 23.37662
+\end{verbatim}
+
+On retrouve une performance de 76\% sur le modèle. Le modèle predit bien
+la classe des hauts prix à 77\% et celle de pas prix à 75\%.
+
+\hypertarget{e-k-folds-le-model-ridge}{%
+\subsubsection{e) k-folds le model
+ridge}\label{e-k-folds-le-model-ridge}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{##shuffling}
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{1234}\NormalTok{)}
+\NormalTok{rows <-}\StringTok{ }\KeywordTok{sample}\NormalTok{(}\KeywordTok{nrow}\NormalTok{(tabmed)) }\CommentTok{# melange des rows du dataset}
+\NormalTok{tabmedk <-}\StringTok{ }\NormalTok{tabmed[rows, ]}
+\CommentTok{## folds}
+\NormalTok{k =}\StringTok{ }\DecValTok{15} \CommentTok{#as.integer(1/(1-r)) ## fold number}
+\NormalTok{fold =}\StringTok{ }\KeywordTok{cut}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{,}\KeywordTok{nrow}\NormalTok{(tabmed)), }\DataTypeTok{breaks =}\NormalTok{ k,}\DataTypeTok{labels =} \OtherTok{FALSE}\NormalTok{) }\CommentTok{#organisations des lignes du}
+\CommentTok{#dataset en plusieurs fold}
+\CommentTok{#initialisation des vectueurs qui va contenier les performances a chaque etape}
+\NormalTok{accuracyk.ridge =}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+\NormalTok{recallk.ridge =}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+\NormalTok{precisionk.ridge =}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+\NormalTok{error_ratek.ridge =}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\NormalTok{k) \{}
+\NormalTok{  test_rows =}\StringTok{ }\KeywordTok{which}\NormalTok{(fold }\OperatorTok{==}\StringTok{ }\NormalTok{i,}\DataTypeTok{arr.ind =} \OtherTok{TRUE}\NormalTok{) }
+\NormalTok{  tab.testk =}\StringTok{ }\NormalTok{tabmedk[test_rows,]}
+\NormalTok{  tab.traink =}\StringTok{ }\NormalTok{tabmedk[}\OperatorTok{-}\NormalTok{test_rows,]}
+\NormalTok{  X.traink =}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(tab.traink[,}\OperatorTok{-}\KeywordTok{dim}\NormalTok{(tab.traink)[}\DecValTok{2}\NormalTok{]])}
+\NormalTok{  X.testk =}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(tab.testk[,}\OperatorTok{-}\KeywordTok{dim}\NormalTok{(tab.testk)[}\DecValTok{2}\NormalTok{]])}
+\NormalTok{  Y.testk =}\StringTok{ }\NormalTok{tab.testk}\OperatorTok{$}\NormalTok{medHousePriceBin}
+\NormalTok{  Y.traink =}\StringTok{ }\NormalTok{tab.traink}\OperatorTok{$}\NormalTok{medHousePriceBin}
+  \CommentTok{### regression logistic }
+\NormalTok{  model.ridgek <-}\StringTok{ }\KeywordTok{glmnet}\NormalTok{(X.traink,Y.traink,}\DataTypeTok{alpha=}\DecValTok{0}\NormalTok{,}\DataTypeTok{lambda =}\NormalTok{ grid,}\DataTypeTok{family =} \StringTok{"binomial"}\NormalTok{)}
+  \CommentTok{### prediction}
+  \CommentTok{####################### cross validation}
+\NormalTok{  ridge.cv.out<-}\KeywordTok{cv.glmnet}\NormalTok{(X.traink, Y.traink, }\DataTypeTok{alpha =} \DecValTok{0}\NormalTok{,}\DataTypeTok{nfolds =} \DecValTok{10}\NormalTok{,}\DataTypeTok{family =} \StringTok{"binomial"}\NormalTok{) }\CommentTok{# on sélectionne la meilleure valeur de lambda par validation croisée}
+\NormalTok{  ridge.lamb.mink<-ridge.cv.out}\OperatorTok{$}\NormalTok{lambda.min }\CommentTok{# le meilleur lambda est celui qui produit the min MSE}
+  
+\NormalTok{  prob <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(model.ridgek, }\DataTypeTok{s =}\NormalTok{ ridge.lamb.mink, }\DataTypeTok{newx =}\NormalTok{ X.testk,}\DataTypeTok{type =} \StringTok{'response'}\NormalTok{)}
+\NormalTok{  Y.pred.ridge =}\StringTok{  }\KeywordTok{as.integer}\NormalTok{(prob }\OperatorTok{>=}\StringTok{ }\NormalTok{Threshold) }
+\NormalTok{  confusion_matrix =}\StringTok{ }\KeywordTok{table}\NormalTok{(Y.pred.ridge,tab.testk}\OperatorTok{$}\NormalTok{medHousePriceBin)}
+\NormalTok{  accuracyk.ridge[i] =}\StringTok{ }\KeywordTok{sum}\NormalTok{(}\KeywordTok{diag}\NormalTok{(confusion_matrix))}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix)}\OperatorTok{*}\DecValTok{100}
+\NormalTok{  recallk.ridge[i] =}\StringTok{ }\NormalTok{confusion_matrix[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix[,}\DecValTok{2}\NormalTok{])}\OperatorTok{*}\DecValTok{100}
+\NormalTok{  precisionk.ridge[i] =confusion_matrix[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix[}\DecValTok{2}\NormalTok{,])}\OperatorTok{*}\DecValTok{100}
+\NormalTok{  error_ratek.ridge[i] =}\StringTok{ }\KeywordTok{sum}\NormalTok{(}\KeywordTok{diag}\NormalTok{(confusion_matrix[}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{,}\DecValTok{2}\OperatorTok{:}\DecValTok{1}\NormalTok{]))}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix) }\OperatorTok{*}\DecValTok{100} 
+\NormalTok{\}}
+
+\KeywordTok{mean}\NormalTok{(recallk.ridge)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 86.68707
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mean}\NormalTok{(error_ratek.ridge)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 18.61552
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mean}\NormalTok{(accuracyk.ridge)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 81.38448
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mean}\NormalTok{(precisionk.ridge)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 78.41565
+\end{verbatim}
+
+\hypertarget{i.4-moduxe8le-lasso}{%
+\subsection{I.4) Modèle Lasso}\label{i.4-moduxe8le-lasso}}
+
+\hypertarget{a-model-lasso}{%
+\subsubsection{a) Model Lasso}\label{a-model-lasso}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{grid =}\StringTok{ }\DecValTok{10}\OperatorTok{^}\KeywordTok{seq}\NormalTok{(}\DecValTok{5}\NormalTok{,}\OperatorTok{-}\DecValTok{2}\NormalTok{,}\DataTypeTok{length =} \DecValTok{100}\NormalTok{) }\CommentTok{# sequence des lambda}
+\NormalTok{lasso=}\KeywordTok{glmnet}\NormalTok{(X.train,Y.train,}\DataTypeTok{alpha=}\DecValTok{1}\NormalTok{,}\DataTypeTok{lambda=}\NormalTok{grid,}\DataTypeTok{family =} \StringTok{"binomial"}\NormalTok{, }\DataTypeTok{standardize=}\OtherTok{FALSE}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(lasso,}\DataTypeTok{xvar=}\StringTok{"lambda"}\NormalTok{,}\DataTypeTok{type=}\StringTok{"l"}\NormalTok{,}\DataTypeTok{col=}\DecValTok{1}\OperatorTok{:}\DecValTok{10}\NormalTok{);}\KeywordTok{legend}\NormalTok{(}\StringTok{"topright"}\NormalTok{,}\DataTypeTok{legend=}\KeywordTok{colnames}\NormalTok{(X.train[,}\DecValTok{1}\OperatorTok{:}\KeywordTok{ncol}\NormalTok{(X.train)]), }\DataTypeTok{col=}\DecValTok{1}\OperatorTok{:}\DecValTok{10}\NormalTok{, }\DataTypeTok{lty=}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{TP3_files/figure-latex/unnamed-chunk-23-1.pdf} On voit
+que plus lambda est grand, plus le nombre de variables sélectionnées est
+petit.
+
+\hypertarget{b-selection-du-lambda-par-cross-validation-1}{%
+\subsubsection{\texorpdfstring{b) Selection du \(\lambda\) par cross
+validation}{b) Selection du \textbackslash lambda par cross validation}}\label{b-selection-du-lambda-par-cross-validation-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lasso.cv.out=}\KeywordTok{cv.glmnet}\NormalTok{(X.train, Y.train, }\DataTypeTok{alpha =} \DecValTok{1}\NormalTok{,}\DataTypeTok{nfolds =} \DecValTok{10}\NormalTok{,}\DataTypeTok{family =} \StringTok{"binomial"}\NormalTok{); lasso.cv.out}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:  cv.glmnet(x = X.train, y = Y.train, nfolds = 10, alpha = 1, family = "binomial") 
+## 
+## Measure: Binomial Deviance 
+## 
+##      Lambda Measure      SE Nonzero
+## min 0.00923  0.7484 0.09288       5
+## 1se 0.04923  0.8361 0.05650       4
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lasso.min=lasso.cv.out}\OperatorTok{$}\NormalTok{lambda.min }\CommentTok{# on sélectionne le plus petit lambda qui minimise le MSE }
+\end{Highlighting}
+\end{Shaded}
+
+On voit que plus lambda est grand, plus le nombre de variables
+sélectionnées est petit.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lasso.cv.out=}\KeywordTok{cv.glmnet}\NormalTok{(X.train, Y.train, }\DataTypeTok{alpha =} \DecValTok{1}\NormalTok{,}\DataTypeTok{nfolds =} \DecValTok{10}\NormalTok{,}\DataTypeTok{family =} \StringTok{"binomial"}\NormalTok{); lasso.cv.out}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:  cv.glmnet(x = X.train, y = Y.train, nfolds = 10, alpha = 1, family = "binomial") 
+## 
+## Measure: Binomial Deviance 
+## 
+##      Lambda Measure      SE Nonzero
+## min 0.00636  0.7230 0.08094       5
+## 1se 0.04088  0.8038 0.06328       4
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lasso.min=lasso.cv.out}\OperatorTok{$}\NormalTok{lambda.min }\CommentTok{# on sélectionne le plus petit lambda qui minimise le MSE }
+\end{Highlighting}
+\end{Shaded}
+
+On effectue une prédiction du modèle lasso avec le plus petit lambda
+minimisant le MSE
+
+\hypertarget{c-prediction-du-model-lasso}{%
+\subsubsection{c) Prediction du model
+Lasso}\label{c-prediction-du-model-lasso}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{prob=}\StringTok{ }\KeywordTok{predict}\NormalTok{(lasso, }\DataTypeTok{s=}\NormalTok{lasso.min, }\DataTypeTok{newx=}\NormalTok{X.test, }\DataTypeTok{type=}\StringTok{"response"}\NormalTok{)}
+\NormalTok{lasso.pred=}\KeywordTok{as.numeric}\NormalTok{(prob}\OperatorTok{>=}\NormalTok{Threshold) }\CommentTok{# transforme les données en données binaire avec un seuil de 1/2}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{d-performance-du-model-1}{%
+\subsubsection{d) Performance du model}\label{d-performance-du-model-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{confusion_matrix.lasso =}\StringTok{ }\KeywordTok{table}\NormalTok{(lasso.pred,Y.test) }\CommentTok{# on crée la matrice de confusion }
+\NormalTok{confusion_matrix.lasso}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           Y.test
+## lasso.pred  0  1
+##          0 30  7
+##          1 11 29
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pred.accuracy.lasso =}\StringTok{ }\KeywordTok{sum}\NormalTok{(}\KeywordTok{diag}\NormalTok{(confusion_matrix.lasso))}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix.lasso)}\OperatorTok{*}\DecValTok{100}\CommentTok{#   prediction accuracy}
+\NormalTok{pred.recall.lasso =}\StringTok{ }\NormalTok{confusion_matrix.lasso[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix.lasso[,}\DecValTok{2}\NormalTok{])}\OperatorTok{*}\DecValTok{100} \CommentTok{# proportion des hauts prix bien predit }
+\NormalTok{pred.specifity.lasso =}\StringTok{ }\NormalTok{confusion_matrix.lasso[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix.lasso[,}\DecValTok{1}\NormalTok{])}\OperatorTok{*}\DecValTok{100} \CommentTok{# proportion des bas prix bien predits}
+\NormalTok{pred.precision.lasso =}\StringTok{ }\NormalTok{confusion_matrix.lasso[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix.lasso[}\DecValTok{2}\NormalTok{,])}\OperatorTok{*}\DecValTok{100}
+\NormalTok{pred.error_rate.lasso =}
+\KeywordTok{sum}\NormalTok{(}\KeywordTok{diag}\NormalTok{(confusion_matrix.lasso[}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{,}\DecValTok{2}\OperatorTok{:}\DecValTok{1}\NormalTok{]))}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix.lasso) }\OperatorTok{*}\DecValTok{100} \CommentTok{# proportion des mauvaises predictions}
+
+\NormalTok{pred.accuracy.lasso}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 76.62338
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pred.recall.lasso}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 80.55556
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pred.specifity.lasso}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 73.17073
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pred.error_rate.lasso}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 23.37662
+\end{verbatim}
+
+Avec une performance globale de 76\% on predit les hauts prix à 80\% et
+les as prix à 76\% Ce qui reste dans la gamme des performances des
+regressions precedentes.
+
+\hypertarget{courbe-roc-et-auc-1}{%
+\subsection{Courbe ROC et AUC}\label{courbe-roc-et-auc-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pred.lasso.min=}\KeywordTok{prediction}\NormalTok{(lasso.pred,tab.test}\OperatorTok{$}\NormalTok{medHousePriceBin)}
+\NormalTok{perf.lasso.min=}\KeywordTok{performance}\NormalTok{(pred.lasso.min, }\StringTok{"tpr"}\NormalTok{ ,}\StringTok{"fpr"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(perf)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{TP3_files/figure-latex/unnamed-chunk-29-1.pdf} La
+courbe est assez proche du coin supérieur gauche, ainsi le modèle semble
+capturer le plus possible de vrais évènements avec le moins possible de
+faux évènements.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ROC_auc.lasso=}\KeywordTok{performance}\NormalTok{(pred.lasso.min,}\StringTok{"auc"}\NormalTok{)}
+\NormalTok{AUC.lasso=ROC_auc.lasso}\OperatorTok{@}\NormalTok{y.values[[}\DecValTok{1}\NormalTok{]]}
+\KeywordTok{print}\NormalTok{(AUC.lasso)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.7686314
+\end{verbatim}
+
+l'AUC est de : 0.76
+
+\hypertarget{e-k-folds-le-model-lasso}{%
+\subsubsection{e) K-folds le model
+lasso}\label{e-k-folds-le-model-lasso}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{##shuffling}
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{1234}\NormalTok{)}
+\NormalTok{rows <-}\StringTok{ }\KeywordTok{sample}\NormalTok{(}\KeywordTok{nrow}\NormalTok{(tabmed)) }\CommentTok{# melange des rows du dataset}
+\NormalTok{tabmedk <-}\StringTok{ }\NormalTok{tabmed[rows, ]}
+\CommentTok{## folds}
+\NormalTok{k =}\StringTok{ }\DecValTok{15} \CommentTok{#as.integer(1/(1-r)) ## fold number}
+\NormalTok{fold =}\StringTok{ }\KeywordTok{cut}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{,}\KeywordTok{nrow}\NormalTok{(tabmed)), }\DataTypeTok{breaks =}\NormalTok{ k,}\DataTypeTok{labels =} \OtherTok{FALSE}\NormalTok{) }\CommentTok{#organisations des lignes du}
+\CommentTok{#dataset en plusieurs fold}
+\CommentTok{#initialisation des vectueurs qui va contenier les performances a chaque etape}
+\NormalTok{accuracyk.lasso =}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+\NormalTok{recallk.lasso =}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+\NormalTok{precisionk.lasso =}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+\NormalTok{error_ratek.lasso =}\StringTok{ }\KeywordTok{c}\NormalTok{()}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\NormalTok{k) \{}
+\NormalTok{  test_rows =}\StringTok{ }\KeywordTok{which}\NormalTok{(fold }\OperatorTok{==}\StringTok{ }\NormalTok{i,}\DataTypeTok{arr.ind =} \OtherTok{TRUE}\NormalTok{) }
+\NormalTok{  tab.testk =}\StringTok{ }\NormalTok{tabmedk[test_rows,]}
+\NormalTok{  tab.traink =}\StringTok{ }\NormalTok{tabmedk[}\OperatorTok{-}\NormalTok{test_rows,]}
+\NormalTok{  X.traink =}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(tab.traink[,}\OperatorTok{-}\KeywordTok{dim}\NormalTok{(tab.traink)[}\DecValTok{2}\NormalTok{]])}
+\NormalTok{  X.testk =}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(tab.testk[,}\OperatorTok{-}\KeywordTok{dim}\NormalTok{(tab.testk)[}\DecValTok{2}\NormalTok{]])}
+\NormalTok{  Y.testk =}\StringTok{ }\NormalTok{tab.testk}\OperatorTok{$}\NormalTok{medHousePriceBin}
+\NormalTok{  Y.traink =}\StringTok{ }\NormalTok{tab.traink}\OperatorTok{$}\NormalTok{medHousePriceBin}
+  \CommentTok{### regression logistic }
+\NormalTok{  model.lassok <-}\StringTok{ }\KeywordTok{glmnet}\NormalTok{(X.traink,Y.traink,}\DataTypeTok{alpha=}\DecValTok{1}\NormalTok{,}\DataTypeTok{lambda =}\NormalTok{ grid,}\DataTypeTok{family =} \StringTok{"binomial"}\NormalTok{)}
+  \CommentTok{### prediction}
+  \CommentTok{####################### cross validation}
+\NormalTok{  lasso.cv.out<-}\KeywordTok{cv.glmnet}\NormalTok{(X.traink, Y.traink, }\DataTypeTok{alpha =} \DecValTok{1}\NormalTok{,}\DataTypeTok{nfolds =} \DecValTok{10}\NormalTok{,}\DataTypeTok{family =} \StringTok{"binomial"}\NormalTok{) }
+  \CommentTok{# on sélectionne la meilleure valeur de lambda par validation croisée}
+\NormalTok{  lasso.lamb.mink<-lasso.cv.out}\OperatorTok{$}\NormalTok{lambda.min }\CommentTok{# le meilleur lambda est celui qui produit the min MSE}
+  
+\NormalTok{  prob <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(model.lassok, }\DataTypeTok{s =}\NormalTok{ lasso.lamb.mink, }\DataTypeTok{newx =}\NormalTok{ X.testk,}\DataTypeTok{type =} \StringTok{'response'}\NormalTok{)}
+\NormalTok{  Y.pred.lasso =}\StringTok{  }\KeywordTok{as.integer}\NormalTok{(prob }\OperatorTok{>=}\StringTok{ }\NormalTok{Threshold) }
+\NormalTok{  confusion_matrix =}\StringTok{ }\KeywordTok{table}\NormalTok{(Y.pred.lasso,tab.testk}\OperatorTok{$}\NormalTok{medHousePriceBin)}
+\NormalTok{  accuracyk.lasso[i] =}\StringTok{ }\KeywordTok{sum}\NormalTok{(}\KeywordTok{diag}\NormalTok{(confusion_matrix))}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix)}\OperatorTok{*}\DecValTok{100}
+\NormalTok{  recallk.lasso[i] =}\StringTok{ }\NormalTok{confusion_matrix[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix[,}\DecValTok{2}\NormalTok{])}\OperatorTok{*}\DecValTok{100}
+\NormalTok{  precisionk.lasso[i] =confusion_matrix[}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix[}\DecValTok{2}\NormalTok{,])}\OperatorTok{*}\DecValTok{100}
+\NormalTok{  error_ratek.lasso[i] =}\StringTok{ }\KeywordTok{sum}\NormalTok{(}\KeywordTok{diag}\NormalTok{(confusion_matrix[}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{,}\DecValTok{2}\OperatorTok{:}\DecValTok{1}\NormalTok{]))}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(confusion_matrix) }\OperatorTok{*}\DecValTok{100} 
+\NormalTok{\}}
+\KeywordTok{mean}\NormalTok{(accuracyk.lasso)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 81.63139
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mean}\NormalTok{(recallk.lasso)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 88.45316
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mean}\NormalTok{(precisionk.lasso)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 78.3217
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mean}\NormalTok{(error_ratek.lasso)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 18.36861
+\end{verbatim}
+
+\hypertarget{ii-conclusion}{%
+\section{II )Conclusion}\label{ii-conclusion}}
+
+On va comparer les differents modeles entre eux.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow =} \KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+\KeywordTok{boxplot}\NormalTok{(}\KeywordTok{data.frame}\NormalTok{(accuracyk.full,accuracyk.step,accuracyk.ridge,accuracyk.lasso),}\DataTypeTok{col =} \StringTok{"green"}\NormalTok{,}\DataTypeTok{boxwex =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{las =} \DecValTok{1}\NormalTok{,}\DataTypeTok{names =} \KeywordTok{c}\NormalTok{(}\StringTok{"full"}\NormalTok{,}\StringTok{"stepw"}\NormalTok{,}\StringTok{"ridge"}\NormalTok{,}\StringTok{"lasso"}\NormalTok{),}\DataTypeTok{main =} \StringTok{"accuracy"}\NormalTok{)}
+\KeywordTok{boxplot}\NormalTok{(}\KeywordTok{data.frame}\NormalTok{(recallk.full,recallk.step,recallk.ridge,recallk.lasso),}\DataTypeTok{col =} \StringTok{"blue"}\NormalTok{,}\DataTypeTok{boxwex =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{las =} \DecValTok{1}\NormalTok{,}\DataTypeTok{names =} \KeywordTok{c}\NormalTok{(}\StringTok{"full"}\NormalTok{,}\StringTok{"stepw"}\NormalTok{,}\StringTok{"ridge"}\NormalTok{,}\StringTok{"lasso"}\NormalTok{),}\DataTypeTok{main =} \StringTok{"recall"}\NormalTok{)}
+\KeywordTok{boxplot}\NormalTok{(}\KeywordTok{data.frame}\NormalTok{(precisionk.full,precisionk.step,precisionk.ridge,precisionk.lasso),}\DataTypeTok{col =} \StringTok{"yellow"}\NormalTok{,}\DataTypeTok{boxwex =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{las =} \DecValTok{1}\NormalTok{,}\DataTypeTok{names =} \KeywordTok{c}\NormalTok{(}\StringTok{"full"}\NormalTok{,}\StringTok{"stepw"}\NormalTok{,}\StringTok{"ridge"}\NormalTok{,}\StringTok{"lasso"}\NormalTok{),}\DataTypeTok{main =} \StringTok{"precision"}\NormalTok{)}
+\KeywordTok{boxplot}\NormalTok{(}\KeywordTok{data.frame}\NormalTok{(error_ratek.full,error_ratek.step,error_ratek.ridge,error_ratek.lasso),}\DataTypeTok{col =} \StringTok{"red"}\NormalTok{,}\DataTypeTok{boxwex =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{las =} \DecValTok{1}\NormalTok{,}\DataTypeTok{names =} \KeywordTok{c}\NormalTok{(}\StringTok{"full"}\NormalTok{,}\StringTok{"stepw"}\NormalTok{,}\StringTok{"ridge"}\NormalTok{,}\StringTok{"lasso"}\NormalTok{),}\DataTypeTok{main =} \StringTok{"error rate"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{TP3_files/figure-latex/unnamed-chunk-32-1.pdf} On
+remarque, qu'en terme d'accuracy, le stepwise est meilleur. Et aussi
+lorsqu'on regarde le recall la proportion des transactions à haut prix
+bien prédites. La moyenne regression stepwise reste légèrement au dessus
+des autres, avec une box bien plus courte, centrée autour de la moyenne.
+Donc sur la base de ces 2 indicateurs (voir 3 car error\_rate =
+100-accuracy), si le but est de prédire les transactions de prix
+élévées(supérieur à la médiane), une régression stepwise est meilleur.
+
+\end{document}

@@ -1,15 +1,18 @@
 ---
 title: "TP3 Real Estate"
-author: "Vhiny-Guilley"
+author: "Kaabi Linda & Vhiny-Guilley Mombo"
 date: "13/11/2020"
 output:
-  word_document: default
   pdf_document: default
   html_document: default
+  word_document: default
 ---
 
 
-#### loading packages
+Dans cette étude on utilise le dataset "RealEstate.csv" pour expliquer les hauts et les bas prix en utilisants des regressions logistiques. 
+## 1) Chargemment des données et differents packages
+
+## loading packages
 ```{r}
 library(Metrics)
 library(ggplot2)
@@ -20,9 +23,10 @@ library(lars); library(MASS);library(glmnet)
 ```
 
 
-#### Lecture des données
 
-On sépare les prix en 2 classes 0 et 1. Une transaction appartient à la classe 1 si son prix est supérieure à la médiane de la variable prix et 0 sinon.
+## Lecture des données
+
+On sépare les prix en 2 classes 0 et 1. Une transaction appartient à la classe 1 si son prix est supérieure à la médiane de la variable prix et 0 sinon. Préduire si une transaction appartient à une de ces 2 classes peut se faire par une régressions logistiques.
 
 ```{r}
 
@@ -40,53 +44,68 @@ head(tabmed)
 
 
 ```
-#### visualisation des données
+## visualisation des données
+Le plot des différentes covariables nous permet de distinguer les dependances a priori entre elles.
 
 ```{r}
 mcor = cor(tabmed) # correlation matrix
-
 corrplot(mcor, method="color", addCoef.col= "black", tl.srt =
 45, sig.level=0.01, insig="blank")
-pairs(tabmed,pch=22,bg=c("red","blue")[unclass(factor(tabmed[,"medHousePriceBin"]))])
+pairs(tabmed,pch=22,bg=c("red","blue")[unclass(factor(tabmed[,"medHousePriceBin"]))]) # 
+#dans le plot les points rouges sont les transactions dont le prix sont
+# en dessous de la mediane [0], et le bleus celles au dessus [1]
 ```
-Dans ce graphe les points bleus sont les transactions dont le prix est supérieur à la médiane et les rouges sont celles dont le prix est inférieur. A part, X1.transaction.date/X2.house.date, sur lequel on peut pas distinguer des clusters, sur les autres plots , on voit nettement des cluster se former dans chacun des covariables plots.
+Dans ce graphe les points bleus sont les transactions dont le prix est supérieur à la médiane et les rouges sont celles dont le prix est inférieur. A part, X1.transaction.date/X2.house.date, sur lequel on peut pas distinguer des clusters, sur les autres plots , on voit nettement des clusterS se former dans chacun des covariables plots.
+La proximité à la station la plus proche X3 est une variables fortement corrélée avec la X6.longitude.
 
-La proximité à la station la plus proche est une variables fortement corrélée avec la longitude, et moyennement corrélée aux autres variables.
 
 
-Dans la suite on va essayer de generer un modèle de regression logistique jeu de données.
 
-### logistic model
-#### organisation du dataset
+# I) Les modèles.
+Dans la suite on va essayer de generer differents modèles à partir des regression logistique sur notre eu de données:
+
+On commencera par un modèle dit "full", qui utiliseras toutes les variables, ensuite on fera une selection de variables grace une méthode "stepwise", puis on fera des regressions logistiques sous contraintes classiques en utilisant "ridge" et "lasso".
+
+
+### organisation du dataset
+on va partitionner notre jeu de données en training et test avec des proportions respectives de 80% et 20%.
 ```{r}
-#set.seed(1234)
-p = 0.8
-ind = sample(2, nrow(tabmed), replace = T, prob = c(p,1-p)) ## selection aleatoire 80 - 20 des indices du tableau 
-tab.train = as.data.frame(tabmed[ind == 1,])
-tab.test = as.data.frame(tabmed[ind == 2,])
-```
+set.seed(1234) #assure la repetabilité des differents pocessus aleatoire
+p = 0.8 # represente 80% qui va  etre pour le trainin set 
+ind = sample(2, nrow(tabmed), replace = T, prob = c(p,1-p)) ## selectionne les indices
+#aleatoirent entre 2 groupe, le premiere groupe represente 80 % de l'ensemble 
+#des indices et le 2e groupe le reste.
+tab.train = as.data.frame(tabmed[ind == 1,]) #training dataset
+tab.test = as.data.frame(tabmed[ind == 2,]) #test dataset
 
-#### Etude du model
+X.train = as.matrix(tab.train[,-dim(tab.train)[2]])
+X.test = as.matrix(tab.test[,-dim(tab.test)[2]])
+Y.test = tab.test$medHousePriceBin
+Y.train = tab.train$medHousePriceBin
+```
+## I.1 Modele full
+### a) model full
 ```{r}
 model.full = glm(medHousePriceBin ~ ., data = tab.train, family = 'binomial')
 summary(model.full)
 ```
-Avec un seuil de p-value à 0.01, les variables  statistiquement significative sont X2,X3,X4 et X5. De plus le test rejete la varible X6.longitude avec une probabilité de 0.95! Ce qui est sans doute du à la corrélation de celle ci avec X3.
+Avec un seuil de p-value à 0.01, les variables  statistiquement significatives sont X2,X3,X4 et X5. De plus le test rejete la varible X6.longitude. Ce qui est sans doute du à la corrélation de celle ci avec X3.
 
 
 
-#### Prediction
+### b) Prediction avec le model full
 ```{r}
  ### prediction
 prob = predict.glm(model.full, newdata = tab.test,type = "response") # give the predicted probability
-OR = exp(model.full$coefficients) # odd ratio
-summary(prob)
-OR
+OR_full = exp(model.full$coefficients) # odd ratio
+OR_full
 ```
+Une augmentation de X4 le nombre de magasins de proximité, et la latitute X5 ou la date de transaction X1 semble augmenter augmenter le prix de la transaction. Tandis que une augmententation des autres variables telles que le l'age de maison X2, la longitude X6 ou la distance a la station la plus proche X3 semble diminuer le prix de la transaction.
 
-#### Performance du model 
+
+### c) Performance du model full
 ```{r}
-Threshold = 0.5
+Threshold = 0.5 # for MAE estimation
 Y.pred.full =  as.integer(prob >= Threshold) 
 confusion_matrix.full = table(Y.pred.full,tab.test$medHousePriceBin)
 confusion_matrix.full
@@ -95,79 +114,190 @@ confusion_matrix.full
 La matrice de confusion nous donne une performance
 
 ```{r}
-pred.accuracy.full = sum(diag(confusion_matrix.full))/sum(confusion_matrix.full)*100#   prediction accuracy
-pred.recall.full = confusion_matrix.full[2,2]/sum(confusion_matrix.full[,2])*100 # probabilité de bien predire les hauts prix  
-pred.specifity.full = confusion_matrix.full[1,1]/sum(confusion_matrix.full[,1])*100 # probabilité de bien predire les bas prix  
-pred.precision.full = confusion_matrix.full[2,2]/sum(confusion_matrix.full[2,])*100
-pred.error_rate.full = sum(diag(confusion_matrix.full[1:2,2:1]))/sum(confusion_matrix.full) *100 # probabilité d'obtenir une erreur
-
-actual.accurary =  as.double(table(tab.test$medHousePriceBin)[1]/sum(table(tab.test$medHousePriceBin))) # model accuracy
-pred.accuracy.full
-pred.recall.full
-pred.error_rate.full
-actual.accurary
+accuracy.full = sum(diag(confusion_matrix.full))/sum(confusion_matrix.full)*100#   
+  recall.full = confusion_matrix.full[2,2]/sum(confusion_matrix.full[,2])*100 #
+  precision.full =confusion_matrix.full[2,2]/sum(confusion_matrix.full[2,])*100
+  error_rate.full = sum(diag(confusion_matrix.full[1:2,2:1]))/sum(confusion_matrix.full) *100 
 ```
 
+Avec une specificité de 80% et un un recall de 75% le model full prédit assez bien les éléments de differentes classe. Globalement on fait une erreur de 22%, ce qui relativement bas au vu de la taille de l'echantillon.
 
-#### k-folds le model full
+
+Afin d'évaluer d'avoir une meilleur fiabilité à notre modèle on va effecteur une Validation croisée.
+
+### d) k-folds pour le model full
 
 ```{r}
 ##shuffling
-rows <- sample(nrow(tabmed))
+set.seed(1234)
+rows <- sample(nrow(tabmed)) # melange des rows du dataset
 tabmed <- tabmed[rows, ]
 ## folds
 k = 15 #as.integer(1/(1-r)) ## fold number
-fold = cut(seq(1,nrow(tabmed)), breaks = k,labels = FALSE)
-##
-pred.accuracyk.full = c()
-pred.recallk.full = c()
-pred.error_ratek.full = c()
+fold = cut(seq(1,nrow(tabmed)), breaks = k,labels = FALSE) #organisations des lignes du
+#dataset en plusieurs fold
+#initialisation des vectueurs qui va contenier les performances a chaque etape
+accuracyk.full = c()
+recallk.full = c()
+precisionk.full = c()
+error_ratek.full = c()
 
 for (i in 1:k) {
-  test_rows = which(fold == i,arr.ind = TRUE) 
+  test_rows = which(fold == i,arr.ind = TRUE) #selection des lignes qui correspondent 
+  # au fold i
   tab.testk = tabmed[test_rows,]
   tab.traink = tabmed[-test_rows,]
-  #Y.testk = Y[test_rows]
   ### regression logistic 
   model.fullk=glm(medHousePriceBin~.,family=binomial,data = tab.traink)
   ### prediction
-  prob = predict.glm(model.fullk, newdata = tab.testk,type = "response") # give prob
-  Y.pred.full =  as.integer(prob >= Threshold) 
+  prob = predict.glm(model.fullk, newdata = tab.testk,type = "response") # give probability
+  Y.pred.full =  as.integer(prob >= Threshold)  #MAE estimation
   confusion_matrix = table(Y.pred.full,tab.testk$medHousePriceBin)
-  pred.accuracyk.full[i] = sum(diag(confusion_matrix))/sum(confusion_matrix)*100#   prediction accuracy
-  pred.recallk.full[i] = confusion_matrix[2,2]/sum(confusion_matrix[,2])*100 # the prediction of being ill ability
-  pred.error_ratek.full[i] = sum(diag(confusion_matrix[1:2,2:1]))/sum(confusion_matrix) *100 
+  accuracyk.full[i] = sum(diag(confusion_matrix))/sum(confusion_matrix)*100#   
+  recallk.full[i] = confusion_matrix[2,2]/sum(confusion_matrix[,2])*100 #
+  precisionk.full[i] =confusion_matrix[2,2]/sum(confusion_matrix[2,])*100
+  error_ratek.full[i] = sum(diag(confusion_matrix[1:2,2:1]))/sum(confusion_matrix) *100 
 }
-boxplot(data.frame(pred.recallk.full,pred.accuracyk.full,pred.error_ratek.full))
-mean(pred.recallk.full)
-mean(pred.error_ratek.full)
-mean(pred.accuracyk.full)
+mean(recallk.full)
+mean(error_ratek.full)
+mean(accuracyk.full)
+mean(precisionk.full)
+
 ```
 
-En utilisant le k-fold  on évalue la precision du model. nous donne une bonne performance global. Avec une performance global de 80% et un taux d'erreur 20%.
+En utilisant le k-fold  on évalue la precision du model. nous donne une bonne performance global. Avec une performance global de 80% et un taux d'erreur d'environ 20%.
 
-### Ridge regression
-#### organisation du dataset
+## I.2) Regression Logistique avec selection de variable Stepwise
+
+On a vu que certaines variables, comme X6.longitude était pas significative dans notre model full,dans cette partie, on va effectuer une selection de Variables, puis une regression logistique sur ces dernières.
+
+### a) Resstep Model
+Selection des variables à partir du model précédent.
+```{r}
+resstep<-step(model.full,direction='both'); summary(resstep)
+```
+
+Sans surprise, comme vu dans le TP2, la variable X6.longitude a été éliminée dans la sélection de variables, ce qui augmente la significaivité des autres variables, c'est ce qu'on remarque en comparant les test effectués sur une régression logistique de type full (toutes les variables) et les test sur une régression logistique de type stepwise. 
 
 ```{r}
-X.train = as.matrix(tab.train[,-dim(tab.train)[2]])
-X.test = as.matrix(tab.test[,-dim(tab.test)[2]])
-Y.test = tab.test$medHousePriceBin
-Y.train = tab.train$medHousePriceBin
+OR_step=exp(resstep$coefficients) # give the odd ratios on stepwise model
+OR_step
 ```
 
-#### Ridge model
+Comme precedemment, les variables X1.transaction date, X4.convenience.stores et X5.latitude, leur augmentation semble entrainer une augmentation de la probabilité que medHousePriceBin soit au-dessus de la médiane du prix de vente, au risque de 5%.
+
+## b ) Prédiction sur le model stepwise
+
+```{r}
+prob= predict.glm(resstep, newdata = tab.test,type = "response") # give the predicted prob on the stepwise model
+pred_step=as.numeric(prob>Threshold) #
+```
+
+On calcule les prédictions contruites à partir de ce modèle pred_step qui donne la valeur des $\hat\eta$ pour tous les individus dans le data set test. pred_step vaut 1 si pred_step > 1/2. 
+
+```{r}
+confusion_matrix.step = table(pred_step,tab.test$medHousePriceBin)
+confusion_matrix.step
+```
+La matrice de confusion nous montre qu'on predit mieux de vrai evenements 
+qu'on en fait des erreurs.
+
+```{r}
+pred.accuracy.step = sum(diag(confusion_matrix.step))/sum(confusion_matrix.step)*100
+#prediction accuracy
+pred.recall.step = confusion_matrix.step[2,2]/sum(confusion_matrix.step[,2])*100 
+# probabilité que la prediction des hauts prix soit correctes 
+pred.specifity.step = confusion_matrix.step[1,1]/sum(confusion_matrix.step[,1])*100 
+# probabilité que la prediction des bas prix soit correctes 
+pred.precision.step = confusion_matrix.step[2,2]/sum(confusion_matrix.step[2,])*100
+# 
+pred.error_rate.step = sum(diag(confusion_matrix.step[1:2,2:1]))/sum(confusion_matrix.step) *100 # probabilité d'obtenir une erreur
+
+pred.accuracy.step
+pred.recall.step
+pred.specifity.step
+pred.error_rate.step
+```
+Comme dit precedemment mais avec des chiffres, on effectue des bonnes prédictions en moyenne à 80.5%. Ce qui est pas un bon score au vu de la taille de l'échantillon. 
+
+### Courbe ROC et AUC 
+```{r}
+
+library(ROCR)
+
+pred=prediction(pred_step,tab.test$medHousePriceBin)
+perf=performance(pred, "tpr" ,"fpr")
+plot(perf)
+```
+
+La courbe est assez proche du coin supérieur gauche, ainsi le modèle semble capturer le plus possible de vrais évènements avec le moins possible de faux évènements.
+
+```{r}
+ROC_auc=performance(pred,"auc")
+AUC=ROC_auc@y.values[[1]]
+print(AUC)
+```
+L'AUC est de 0.805.
+
+### c) k-fold pour le model stepwise
+
+On effectue 15 folds
+````{r}
+rows=sample(nrow(tabmed))
+tabmedk=tabmed[rows,]
+
+## folds
+
+k=15
+fold=cut(seq(1,nrow(tabmed)),breaks=k, labels=FALSE)
+##
+accuracyk.step=c()
+recallk.step=c()
+error_ratek.step=c()
+precisionk.step=c()
+
+for (i in 1:k){
+  test_rows=which(fold==i, arr.ind=TRUE)
+  tab.testk=tabmedk[test_rows,]
+  tab.traink=tabmedk[-test_rows,]
+  
+  # regression logistique
+  model.full=glm(medHousePriceBin~., family=binomial, data=tab.traink)
+  model.stepk=step(model.full,direction='both')
+  
+  # prediction
+  
+  pred_stepk=predict.glm(model.stepk, newdata= tab.testk, type="response")
+  Y.pred.step=as.numeric(pred_stepk>=Threshold)
+  confusion_matrix=table(Y.pred.step, tab.testk$medHousePriceBin)
+  accuracyk.step[i]=sum(diag(confusion_matrix))/sum(confusion_matrix)*100 # prediction accuracy 
+  precisionk.step[i] =confusion_matrix[2,2]/sum(confusion_matrix[2,])*100
+  recallk.step[i]=confusion_matrix[2,2]/sum(confusion_matrix[,2])*100 
+  error_ratek.step[i]=sum(diag(confusion_matrix[1:2,2:1]))/sum(confusion_matrix)*100
+}
+mean(recallk.step)
+mean(error_ratek.step)
+mean(accuracyk.step)
+mean(precisionk.step)
+
+
+```
+
+
+En utilisant la validation croisée, on remarque que nous avons une performance globale qui se situe autour de 80%, avec un taux d'erreur autour de 20%.
+
+
+## I.3 Ridge regression
+
+On effectue ici une regression ridge.
+### a )Ridge model
 ```{r}
 grid = 10^seq(5,-2,length = 100) # sequence des lambda
-model.ridge <- glmnet(X.train,Y.train,alpha=0,lambda = grid,family = "binomial")
-plot(model.ridge,xvar="lambda",type="l",col=1:nrow(tab.train)-1);legend("topright",legend=colnames(tab.train[,1:ncol(tab.train)-1]), col=1:10, lty=1)
+model.ridge <- glmnet(X.train,Y.train,alpha=0,lambda = grid,family = "binomial") # model
+plot(model.ridge,xvar="lambda",type="l",col=1:nrow(tab.train)-1);legend("topright"                                                            ,legend=colnames(tab.train[,1:ncol(tab.train)-1]), col=1:10, lty=1)
 ```
 
-```{r}
-plot(c(model.ridge$lambda,0),pch = 16,type = "b",col = "blue"); grid()
-```
-
-#### Selection du $\lambda$ par cross validation
+### b) Selection du $\lambda$ par cross validation
 ```{r}
 ####################### cross validation
 ridge.cv.out<-cv.glmnet(X.train, Y.train, alpha = 0,nfolds = 10,family = "binomial"); ridge.cv.out # on sélectionne la meilleure valeur de lambda par validation croisée
@@ -177,56 +307,52 @@ ridge.lamb.min<-ridge.cv.out$lambda.min # le meilleur lambda est celui qui produ
 
 On selectionne le modele le lambda qui minimise le MSE pour notre modèle. On effectue 10 folds.
 
+### c) Prediction du model Ridge
 ```{r}
-ridge.predbest <- predict(model.ridge, s = ridge.lamb.min, newx = X.test,type = 'response')
-ridge.predbest[1:20]
-
-```
-#### prediction
-```{r}
-Threshold = 0.5
-Y.pred.ridge =  as.integer(ridge.predbest >= Threshold)
-confusion_matrix.ridge = table(Y.pred.ridge,Y.test)
+ridge.pred <- predict(model.ridge, s = ridge.lamb.min, newx = X.test,type = 'response')
+Y.pred.ridge =  as.integer(ridge.pred >= Threshold)
+confusion_matrix.ridge = table(Y.pred.ridge,Y.test) # matrice de confusion
 confusion_matrix.ridge
 
 ```
-La matrice de confusion nous donne une performance
+### d) Performance du model
 
 ```{r}
 pred.accuracy.ridge = sum(diag(confusion_matrix.ridge))/sum(confusion_matrix.ridge)*100#   prediction accuracy
-pred.recall.ridge = confusion_matrix.ridge[2,2]/sum(confusion_matrix.ridge[,2])*100 # probabilité de bien predire les hauts prix  
-pred.specifity.ridge = confusion_matrix.ridge[1,1]/sum(confusion_matrix.ridge[,1])*100 # probabilité de bien predire les bas prix  
+pred.recall.ridge = confusion_matrix.ridge[2,2]/sum(confusion_matrix.ridge[,2])*100 # proportion des hauts prix bien predit 
+pred.specifity.ridge = confusion_matrix.ridge[1,1]/sum(confusion_matrix.ridge[,1])*100 # proportion des bas prix bien predits
 pred.precision.ridge = confusion_matrix.ridge[2,2]/sum(confusion_matrix.ridge[2,])*100
-pred.error_rate.ridge = sum(diag(confusion_matrix.ridge[1:2,2:1]))/sum(confusion_matrix.ridge) *100 # probabilité d'obtenir une erreur
+pred.error_rate.ridge =
+sum(diag(confusion_matrix.ridge[1:2,2:1]))/sum(confusion_matrix.ridge) *100 # proportion des mauvaises predictions
 
-actual.accurary =  as.double(table(tab.test$medHousePriceBin)[1]/sum(table(tab.test$medHousePriceBin))) # model accuracy
 pred.accuracy.ridge
 pred.recall.ridge
 pred.specifity.ridge
 pred.error_rate.ridge
-actual.accurary
 ```
-On retrouve une performance de 76% sur le modèle. Le modèle predit bien la classe des hauts prix à 77%.
+On retrouve une performance de 76% sur le modèle. Le modèle predit bien la classe des hauts prix à 77% et celle de pas prix à 75%.
 
 
-#### k-folds le model ridge
+### e) k-folds le model ridge
 
 ```{r}
 ##shuffling
-rows <- sample(nrow(tabmed))
-tabmed <- tabmed[rows, ]
+set.seed(1234)
+rows <- sample(nrow(tabmed)) # melange des rows du dataset
+tabmedk <- tabmed[rows, ]
 ## folds
 k = 15 #as.integer(1/(1-r)) ## fold number
-fold = cut(seq(1,nrow(tabmed)), breaks = k,labels = FALSE)
-##
-pred.accuracyk.ridge = c()
-pred.recallk.ridge = c()
-pred.error_ratek.ridge = c()
-
+fold = cut(seq(1,nrow(tabmed)), breaks = k,labels = FALSE) #organisations des lignes du
+#dataset en plusieurs fold
+#initialisation des vectueurs qui va contenier les performances a chaque etape
+accuracyk.ridge = c()
+recallk.ridge = c()
+precisionk.ridge = c()
+error_ratek.ridge = c()
 for (i in 1:k) {
   test_rows = which(fold == i,arr.ind = TRUE) 
-  tab.testk = tabmed[test_rows,]
-  tab.traink = tabmed[-test_rows,]
+  tab.testk = tabmedk[test_rows,]
+  tab.traink = tabmedk[-test_rows,]
   X.traink = as.matrix(tab.traink[,-dim(tab.traink)[2]])
   X.testk = as.matrix(tab.testk[,-dim(tab.testk)[2]])
   Y.testk = tab.testk$medHousePriceBin
@@ -241,19 +367,154 @@ for (i in 1:k) {
   prob <- predict(model.ridgek, s = ridge.lamb.mink, newx = X.testk,type = 'response')
   Y.pred.ridge =  as.integer(prob >= Threshold) 
   confusion_matrix = table(Y.pred.ridge,tab.testk$medHousePriceBin)
-  pred.accuracyk.ridge[i] = sum(diag(confusion_matrix))/sum(confusion_matrix)*100#   prediction accuracy
-  pred.recallk.ridge[i] = confusion_matrix[2,2]/sum(confusion_matrix[,2])*100 # the prediction of being ill ability
-  pred.error_ratek.ridge[i] = sum(diag(confusion_matrix[1:2,2:1]))/sum(confusion_matrix) *100 
+  accuracyk.ridge[i] = sum(diag(confusion_matrix))/sum(confusion_matrix)*100
+  recallk.ridge[i] = confusion_matrix[2,2]/sum(confusion_matrix[,2])*100
+  precisionk.ridge[i] =confusion_matrix[2,2]/sum(confusion_matrix[2,])*100
+  error_ratek.ridge[i] = sum(diag(confusion_matrix[1:2,2:1]))/sum(confusion_matrix) *100 
 }
-mean(pred.recallk.ridge)
-mean(pred.error_ratek.ridge)
-mean(pred.accuracyk.ridge)
+
+mean(recallk.ridge)
+mean(error_ratek.ridge)
+mean(accuracyk.ridge)
+mean(precisionk.ridge)
 ```
+
+
+
+## I.4) Modèle Lasso 
+
+### a) Model Lasso
 ```{r}
-boxplot(data.frame(pred.recallk.full,pred.accuracyk.full,pred.error_ratek.full))
-boxplot(data.frame(pred.recallk.ridge,pred.accuracyk.ridge,pred.error_ratek.ridge))
-mean(pred.recallk.full)
-mean(pred.error_ratek.full)
-mean(pred.accuracyk.full)
+grid = 10^seq(5,-2,length = 100) # sequence des lambda
+lasso=glmnet(X.train,Y.train,alpha=1,lambda=grid,family = "binomial", standardize=FALSE)
+plot(lasso,xvar="lambda",type="l",col=1:10);legend("topright",legend=colnames(X.train[,1:ncol(X.train)]), col=1:10, lty=1)
 ```
+On voit que plus lambda est grand, plus le nombre de variables sélectionnées est petit. 
+
+### b) Selection du $\lambda$ par cross validation
+```{r}
+lasso.cv.out=cv.glmnet(X.train, Y.train, alpha = 1,nfolds = 10,family = "binomial"); lasso.cv.out
+lasso.min=lasso.cv.out$lambda.min # on sélectionne le plus petit lambda qui minimise le MSE 
+```
+
+On voit que plus lambda est grand, plus le nombre de variables sélectionnées est petit. 
+
+```{r}
+lasso.cv.out=cv.glmnet(X.train, Y.train, alpha = 1,nfolds = 10,family = "binomial"); lasso.cv.out
+lasso.min=lasso.cv.out$lambda.min # on sélectionne le plus petit lambda qui minimise le MSE 
+```
+
+On effectue une prédiction du modèle lasso avec le plus petit lambda minimisant le MSE 
+
+### c) Prediction du model Lasso
+
+```{r}
+prob= predict(lasso, s=lasso.min, newx=X.test, type="response")
+lasso.pred=as.numeric(prob>=Threshold) # transforme les données en données binaire avec un seuil de 1/2
+```
+
+### d) Performance du model
+```{r}
+confusion_matrix.lasso = table(lasso.pred,Y.test) # on crée la matrice de confusion 
+confusion_matrix.lasso
+```
+
+
+```{r}
+pred.accuracy.lasso = sum(diag(confusion_matrix.lasso))/sum(confusion_matrix.lasso)*100#   prediction accuracy
+pred.recall.lasso = confusion_matrix.lasso[2,2]/sum(confusion_matrix.lasso[,2])*100 # proportion des hauts prix bien predit 
+pred.specifity.lasso = confusion_matrix.lasso[1,1]/sum(confusion_matrix.lasso[,1])*100 # proportion des bas prix bien predits
+pred.precision.lasso = confusion_matrix.lasso[2,2]/sum(confusion_matrix.lasso[2,])*100
+pred.error_rate.lasso =
+sum(diag(confusion_matrix.lasso[1:2,2:1]))/sum(confusion_matrix.lasso) *100 # proportion des mauvaises predictions
+
+pred.accuracy.lasso
+pred.recall.lasso
+pred.specifity.lasso
+pred.error_rate.lasso
+```
+Avec une performance globale de 76% on predit les hauts prix à 80% et les as prix à 76%
+Ce qui reste dans la gamme des performances des regressions precedentes.
+
+
+## Courbe ROC et AUC 
+
+```{r}
+pred.lasso.min=prediction(lasso.pred,tab.test$medHousePriceBin)
+perf.lasso.min=performance(pred.lasso.min, "tpr" ,"fpr")
+plot(perf)
+```
+La courbe est assez proche du coin supérieur gauche, ainsi le modèle semble capturer le plus possible de vrais évènements avec le moins possible de faux évènements. 
+
+```{r}
+ROC_auc.lasso=performance(pred.lasso.min,"auc")
+AUC.lasso=ROC_auc.lasso@y.values[[1]]
+print(AUC.lasso)
+```
+l'AUC est de  : 0.76
+
+
+### e) K-folds le model lasso
+
+```{r}
+##shuffling
+set.seed(1234)
+rows <- sample(nrow(tabmed)) # melange des rows du dataset
+tabmedk <- tabmed[rows, ]
+## folds
+k = 15 #as.integer(1/(1-r)) ## fold number
+fold = cut(seq(1,nrow(tabmed)), breaks = k,labels = FALSE) #organisations des lignes du
+#dataset en plusieurs fold
+#initialisation des vectueurs qui va contenier les performances a chaque etape
+accuracyk.lasso = c()
+recallk.lasso = c()
+precisionk.lasso = c()
+error_ratek.lasso = c()
+for (i in 1:k) {
+  test_rows = which(fold == i,arr.ind = TRUE) 
+  tab.testk = tabmedk[test_rows,]
+  tab.traink = tabmedk[-test_rows,]
+  X.traink = as.matrix(tab.traink[,-dim(tab.traink)[2]])
+  X.testk = as.matrix(tab.testk[,-dim(tab.testk)[2]])
+  Y.testk = tab.testk$medHousePriceBin
+  Y.traink = tab.traink$medHousePriceBin
+  ### regression logistic 
+  model.lassok <- glmnet(X.traink,Y.traink,alpha=1,lambda = grid,family = "binomial")
+  ### prediction
+  ####################### cross validation
+  lasso.cv.out<-cv.glmnet(X.traink, Y.traink, alpha = 1,nfolds = 10,family = "binomial") 
+  # on sélectionne la meilleure valeur de lambda par validation croisée
+  lasso.lamb.mink<-lasso.cv.out$lambda.min # le meilleur lambda est celui qui produit the min MSE
+  
+  prob <- predict(model.lassok, s = lasso.lamb.mink, newx = X.testk,type = 'response')
+  Y.pred.lasso =  as.integer(prob >= Threshold) 
+  confusion_matrix = table(Y.pred.lasso,tab.testk$medHousePriceBin)
+  accuracyk.lasso[i] = sum(diag(confusion_matrix))/sum(confusion_matrix)*100
+  recallk.lasso[i] = confusion_matrix[2,2]/sum(confusion_matrix[,2])*100
+  precisionk.lasso[i] =confusion_matrix[2,2]/sum(confusion_matrix[2,])*100
+  error_ratek.lasso[i] = sum(diag(confusion_matrix[1:2,2:1]))/sum(confusion_matrix) *100 
+}
+mean(accuracyk.lasso)
+mean(recallk.lasso)
+mean(precisionk.lasso)
+mean(error_ratek.lasso)
+
+
+```
+
+#  II )Conclusion
+On va comparer les differents modeles entre eux.
+
+
+```{r}
+par(mfrow = c(2,2))
+boxplot(data.frame(accuracyk.full,accuracyk.step,accuracyk.ridge,accuracyk.lasso),col = "green",boxwex = 0.2, las = 1,names = c("full","stepw","ridge","lasso"),main = "accuracy")
+boxplot(data.frame(recallk.full,recallk.step,recallk.ridge,recallk.lasso),col = "blue",boxwex = 0.2, las = 1,names = c("full","stepw","ridge","lasso"),main = "recall")
+boxplot(data.frame(precisionk.full,precisionk.step,precisionk.ridge,precisionk.lasso),col = "yellow",boxwex = 0.2, las = 1,names = c("full","stepw","ridge","lasso"),main = "precision")
+boxplot(data.frame(error_ratek.full,error_ratek.step,error_ratek.ridge,error_ratek.lasso),col = "red",boxwex = 0.2, las = 1,names = c("full","stepw","ridge","lasso"),main = "error rate")
+
+```
+On remarque, qu'en terme d'accuracy,  le stepwise est meilleur. Et aussi lorsqu'on regarde le recall la  proportion 
+des transactions à haut prix bien prédites. La moyenne regression stepwise reste légèrement au dessus des autres,
+avec une box bien plus courte, centrée autour de la moyenne. Donc sur la base de ces 2 indicateurs (voir 3 car error_rate = 100-accuracy), si le but est de prédire les transactions de prix élévées(supérieur à la médiane), une régression stepwise est meilleur.
 

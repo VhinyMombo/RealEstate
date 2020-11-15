@@ -262,6 +262,7 @@ ridge.pred1se[1:20]
 ```
 ```{r}
 reslasso = glmnet(X.train,Y.train,alpha=1,lambda = grid,family = "binomial")
+glmpath::cv.glmpath()
 plot(reslasso,xvar="lambda",type="l",col=1:nrow(tab.train)-1);legend("topright",legend=colnames(tab.train[,1:ncol(tab.train)-1]), col=1:10, lty=1)
 ```
 
@@ -273,6 +274,14 @@ plot(c(reslasso$lambda,0),pch = 16,type = "b",col = "blue"); grid()
 ```{r}
 ####################### cross validation
 lasso.cv.out<-cv.glmnet(X.train, Y.train, alpha = 0,nfolds = 10,family = "binomial"); lasso.cv.out # on sélectionne la meilleure valeur de lambda par validation croisée
+fit=glmpath::glmpath(X.train, Y.train,trace = T,,family = "binomial")
+par(mfrow=c(3, 2))
+plot(fit)
+plot(fit, xvar="lambda")
+plot(fit, xvar="step")
+plot(fit, xvar="step", xlimit=8)
+plot(fit, type="aic")
+plot(fit, type="bic")
 lasso.lamb.min<-lasso.cv.out$lambda.min # le meilleur lambda est celui qui produit the min MSE
 lasso.lamb.1se<-lasso.cv.out$lambda.1se # le meilleur lambda est celui qui produit 1 std rule
 

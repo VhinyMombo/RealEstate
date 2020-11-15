@@ -3,8 +3,8 @@ title: "TP3 Real Estate"
 author: "Kaabi Linda & Vhiny-Guilley Mombo"
 date: "13/11/2020"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
   word_document: default
 ---
 
@@ -225,7 +225,7 @@ Comme dit precedemment mais avec des chiffres, on effectue des bonnes prédictio
 
 library(ROCR)
 
-pred=prediction(pred_step,tab.test$medHousePriceBin)
+pred=prediction(prob,tab.test$medHousePriceBin)
 perf=performance(pred, "tpr" ,"fpr")
 plot(perf)
 ```
@@ -393,24 +393,17 @@ On voit que plus lambda est grand, plus le nombre de variables sélectionnées e
 
 ### b) Selection du $\lambda$ par cross validation
 ```{r}
-lasso.cv.out=cv.glmnet(X.train, Y.train, alpha = 1,nfolds = 10,family = "binomial"); lasso.cv.out
+lasso.cv.out=cv.glmnet(X.train, Y.train, alpha = 1,nfolds = 10,family = "binomial"); 
 lasso.min=lasso.cv.out$lambda.min # on sélectionne le plus petit lambda qui minimise le MSE 
 ```
-
-On voit que plus lambda est grand, plus le nombre de variables sélectionnées est petit. 
-
-```{r}
-lasso.cv.out=cv.glmnet(X.train, Y.train, alpha = 1,nfolds = 10,family = "binomial"); lasso.cv.out
-lasso.min=lasso.cv.out$lambda.min # on sélectionne le plus petit lambda qui minimise le MSE 
-```
-
-On effectue une prédiction du modèle lasso avec le plus petit lambda minimisant le MSE 
+On effectue une prediction en utlisant le lambda avec le lambda qui minimise le MSE
 
 ### c) Prediction du model Lasso
+On effec
 
 ```{r}
 prob= predict(lasso, s=lasso.min, newx=X.test, type="response")
-lasso.pred=as.numeric(prob>=Threshold) # transforme les données en données binaire avec un seuil de 1/2
+lasso.pred=as.numeric(prob > Threshold) # transforme les données en données binaire avec un seuil de 1/2
 ```
 
 ### d) Performance du model
@@ -440,14 +433,16 @@ Ce qui reste dans la gamme des performances des regressions precedentes.
 ## Courbe ROC et AUC 
 
 ```{r}
-pred.lasso.min=prediction(lasso.pred,tab.test$medHousePriceBin)
-perf.lasso.min=performance(pred.lasso.min, "tpr" ,"fpr")
-plot(perf)
+
+pred.lasso=prediction(prob,tab.test$medHousePriceBin)
+perf.lasso.min=performance(pred.lasso, "tpr" ,"fpr")
+plot(perf.lasso.min)
 ```
+
 La courbe est assez proche du coin supérieur gauche, ainsi le modèle semble capturer le plus possible de vrais évènements avec le moins possible de faux évènements. 
 
 ```{r}
-ROC_auc.lasso=performance(pred.lasso.min,"auc")
+ROC_auc.lasso=performance(pred.lasso,"auc")
 AUC.lasso=ROC_auc.lasso@y.values[[1]]
 print(AUC.lasso)
 ```
